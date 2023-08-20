@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "Time Picker",
+    "slug": "TP",
+    "version": "1.1.3",
+    "orientation": "portrait",
+    "icon": "./assets/icono.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff",
+      "userInterfaceStyle": "automatic"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "buildNumber": "9",
+      "bundleIdentifier": "com.guido1988.TP",
+      "icon": "./assets/icono.png"
+    },
+
+    "android": {
+      "versionCode": 6,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icono.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.guido1988.TP"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "10e9e189-a84d-427c-9d3a-efd957c7de4e"
+      }
+    }
+  }
+}
