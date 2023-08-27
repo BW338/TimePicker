@@ -11,7 +11,7 @@ const HomeStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Viaticos" // Establece el Splash como ruta inicial
+        initialRouteName="Home" // ruta inicial
         screenOptions={{ headerShown: false }} // Oculta las cabeceras en todas las pantallas
       >
         <Stack.Screen name="Home" component={Home} />

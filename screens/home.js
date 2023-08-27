@@ -100,10 +100,13 @@ const Reset = () => {
     
       };
 
-    const IrAFlex =()=>{
+  const IrAFlex =()=>{
       navigation.navigate('ControlFlex');
+    }
+  const IrAViaticos =()=>{
 
-      }
+        navigation.navigate('Viaticos');
+        }
 
 
 const infoOn =()=>{
@@ -518,7 +521,11 @@ setvencColor('yellow');
 
 <View style={{width:"100%", position:'absolute', bottom:0, }}>
 
-<ToolBar calcular={calcular} Reset={Reset} infoOn={infoOn} ControlFlex={IrAFlex} />
+<ToolBar calcular={calcular}
+         Reset={Reset} 
+         infoOn={infoOn} 
+         ControlFlex={IrAFlex}
+         viaticos={IrAViaticos}  />
 
 </View>
       </ImageBackground>

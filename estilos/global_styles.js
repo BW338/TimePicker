@@ -67,8 +67,7 @@ export const GlobalStyles = StyleSheet.create({
         opacity:1.70, 
         borderRadius:18, 
         width:'95%',
-    },
-
+  },
   relojes:{
     width:'90%',
     borderRadius:1,
@@ -82,7 +81,6 @@ export const GlobalStyles = StyleSheet.create({
     borderColor:'black',
     margin:7,
   },
-  
   fondo: {
     flex:1,
     resizeMode:'cover',
@@ -90,7 +88,6 @@ export const GlobalStyles = StyleSheet.create({
     alignItems:'center',
     
   },
- 
   txBotones:{
     fontSize: 24,
     letterSpacing:5,
@@ -141,7 +138,6 @@ export const GlobalStyles = StyleSheet.create({
     elevation:5,
 
   }, 
-  
   InfoTX:{
     flex:1,
     flexWrap:'wrap',
@@ -154,12 +150,36 @@ export const GlobalStyles = StyleSheet.create({
     flex:1,
     backgroundColor:`#f8f8ff`,
     borderWidth:3,
-    justifyContent:'space-between',
+    justifyContent:'center',
     borderStyle:'solid',
     flexDirection:'row',
     borderColor:'#708090',
     margin:'1%',
     marginTop:'8%',
+    borderRadius: 10,
+    shadowColor:'black',
+    shadowOffset:{
+      width:0,
+      height:2,  
+    },
+    padding:10,
+    shadowOpacity:0.25,
+    shadowRadius:4,
+    elevation:5,
+
+  },
+  bandejasStyle:{
+    flex:1,
+    backgroundColor:`#f8f8ff`,
+    borderWidth:3,
+    justifyContent:'center',
+    borderStyle:'solid',
+    flexDirection:'row',
+    borderColor:'#708090',
+    alignContent:'center',
+    alignItems:'center',
+    margin:'1%',
+    marginTop:'2%',
     borderRadius: 10,
     shadowColor:'black',
     shadowOffset:{
@@ -239,8 +259,8 @@ export const GlobalStyles = StyleSheet.create({
     textAlignVertical: 'center',
     fontSize: 26, 
     textTransform:'uppercase', 
-    padding:2,
-    paddingVertical:8,
+    padding:1,
+    paddingVertical:2,
     borderRadius:15,
     marginTop:'8%',
     marginVertical:6,
@@ -267,7 +287,7 @@ export const GlobalStyles = StyleSheet.create({
   bandejasAEP:{
     color:'white',
     fontWeight:'bold',
-    fontSize:20,
+    fontSize:18,
     borderColor:'white',
     borderWidth:2,
     padding:2,
@@ -277,7 +297,7 @@ export const GlobalStyles = StyleSheet.create({
     backgroundColor:`black`,
     borderBottomRightRadius:12,
     paddingHorizontal:8,
-    marginTop:6,
+    marginTop:0,
     alignSelf: 'flex-start',
   },
   valorHr:{
@@ -305,6 +325,11 @@ export const GlobalStyles = StyleSheet.create({
     borderColor:'black', 
     borderRadius:20 
   },
+  contenedorViaticos:{
+    flex: 1,
+    width:'auto',
+    backgroundColor:`#f0e68c`
+  },
    modalViaticos:{
     textDecorationLine:'underline',
     paddingBottom:'0%',
@@ -330,13 +355,13 @@ export const GlobalStyles = StyleSheet.create({
   
   }, 
   contadorBandejasAep:{
-      color:'black',
+      color:'#000000',
       backgroundColor:`white`,
       fontWeight:'bold',
       fontSize:20,
   },
    totalBandejasAep:{
-    color:'black',
+    color:'#000000',
     padding:3,
     borderRadius:12,
     backgroundColor:`#fff5ee`,
@@ -354,10 +379,10 @@ export const GlobalStyles = StyleSheet.create({
     justifyContent:'flex-start',
     alignContent:'flex-start',
     alignItems:'flex-start',
-    backgroundColor:`black`,
+    backgroundColor:'black',
     borderBottomRightRadius:12,
     paddingHorizontal:8,
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
 }, 
 totalPostas$:{
   color:'black',
@@ -366,13 +391,49 @@ totalPostas$:{
   borderColor:'black',
   borderWidth:2,
   padding:2,
-  marginTop:10,
+  marginTop:2,
   justifyContent:'flex-start',
   alignContent:'flex-start',
   alignItems:'flex-start',
   backgroundColor:`#f0fff0`,
   borderBottomRightRadius:12,
   paddingHorizontal:8,
-  alignSelf: 'center',
-}, 
+  alignSelf: 'flex-start',
+  shadowOffset:{
+    width:0,
+    height:2,  
+  },
+  padding:10,
+  shadowOpacity:0.25,
+  shadowRadius:4,
+  elevation:5,
+},
+totalViaticos:{
+  color:'#66cdaa',
+  fontWeight:'bold',
+  borderColor:'#ffa500',
+  fontSize:22,
+  textAlign:'center',
+  borderWidth:1.3,
+  marginTop:2,
+  padding:2,
+  borderBottomRightRadius:20,
+  shadowColor:'red',
+  backgroundColor:'#191970'
+},
+VContInferior:{
+  flex:1, 
+  justifyContent:'center',
+  flexDirection:'row',
+  alignContent:'center', 
+  marginHorizontal:6,
+ // borderWidth:2,
+ // borderColor:'red'
+},
+VInfIzq:{
+//  borderWidth:2,
+  width:'56%',
+  marginRight:0,
+  marginTop:2
+},
   })

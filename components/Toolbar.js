@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Dimensions  } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Splash from '../screens/Splash';
 import { Ionicons } from '@expo/vector-icons';
-import { Entypo , Fontisto  } from '@expo/vector-icons';
+import { Entypo , Fontisto, MaterialIcons  } from '@expo/vector-icons';
 
 
 const Tab = createBottomTabNavigator();
@@ -11,7 +11,7 @@ const windowHeight = Dimensions.get('window').height;
 const bottomBarHeight = windowHeight * 0.08; // Ajusta el valor 0.08 según lo que desees
 const tabBarHeight = Platform.OS === 'ios' ? 80 : 55;
 
-function ToolBar({ calcular , Reset , infoOn , ControlFlex}){
+function ToolBar({ calcular , Reset , infoOn , ControlFlex, viaticos}){
 
 return(
 
@@ -60,6 +60,22 @@ return(
         <TouchableOpacity
           {...props}
           onPress={() => {infoOn() }}
+          />
+          )        
+    }}
+  />
+   <Tab.Screen
+    name='viaticos'
+    component={Splash}
+    options={{
+      headerShown: false,
+      tabBarIcon: ({ color }) => (
+        <MaterialIcons name="food-bank" size={36} color="white" />
+      ),
+      tabBarButton: (props) => (
+        <TouchableOpacity
+          {...props}
+          onPress={() => {viaticos() }}
           />
           )        
     }}
