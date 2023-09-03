@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, Button, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView} from 'react-native';
+import { View, Text, StyleSheet, TextInput, StatusBar, TouchableOpacity, Modal, Button, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, ImageBackground} from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { GlobalStyles } from "../estilos/global_styles";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,17 +13,33 @@ const ControlFlex = () => {
 
   const [markedDates, setMarkedDates] = useState({});
   const [suma, setSuma] = useState({});
-  const [currentMonth, setCurrentMonth] = useState('');
+  const [currentMonth, setCurrentMonth] = useState(new Date().toLocaleDateString('es', { month: 'long' }));
   const [valorHr, setValorHr] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [infoVisible, setInfoVisible] = useState(false);
-
+  const [hideArrows, setHideArrows] = useState(false);
+  const [sweep, setSweep] = useState(true)
   const navigation = useNavigation();
 
 
   useEffect(() => {
     loadPersistedData();
-     setCurrentMonth (new Date().toLocaleDateString('es', { month: 'long' })) // Establecer el mes actual al cargar la aplicación
+    
+    const currentDate = new Date();
+    const currentMonth = currentDate.toLocaleDateString('es', { month: 'long' });
+    const currentDay = currentDate.toLocaleDateString('es', { day: '2-digit' });
+    
+    console.log('Se carga el mes: ' + currentMonth + ' ' + currentDay);
+  //*** Deshabilita cambio de mes para EVITAR QUE SE PRODUZCA CONFLICTO EN LOS REGISTROS LOS DIAS 1 de cada mes/////
+    if(currentDay === '01'){
+      console.log('Cambio de mes deshabilitado');
+    setHideArrows(true);
+    setSweep(false)
+  }else{
+    setHideArrows(false);
+    setSweep(true)
+  /////////************************************************************************* */
+  }
   }, []);
 
   useEffect(() => {
@@ -36,12 +52,16 @@ const ControlFlex = () => {
 
   const loadPersistedData = async () => {
     try {
-      const storedData = await AsyncStorage.getItem('calendarData');
-      if (storedData) {
-        const { markedDates: storedMarkedDates, suma: storedSuma , valorHr: storedvalorHr} = JSON.parse(storedData);
+      const storedDataFlex = await AsyncStorage.getItem('calendarDataFlex');
+      if (storedDataFlex) {
+        const { markedDates: storedMarkedDates, 
+                suma: storedSuma ,
+                valorHr: storedvalorHr} = JSON.parse(storedDataFlex);
         setMarkedDates(storedMarkedDates);
-        setSuma(storedSuma);
         setValorHr(storedvalorHr);
+        setSuma(storedSuma);
+
+        console.log('MES INICIAL: ' + currentMonth)
       }
     } catch (error) {
       console.log('Error al cargar los datos:', error);
@@ -51,7 +71,7 @@ const ControlFlex = () => {
   const saveDataToStorage = async () => {
     try {
       const dataToStore = JSON.stringify({ markedDates, suma, valorHr });
-      await AsyncStorage.setItem('calendarData', dataToStore);
+      await AsyncStorage.setItem('calendarDataFlex', dataToStore);
     } catch (error) {
       console.log('Error al guardar los datos:', error);
     }
@@ -89,14 +109,17 @@ const ControlFlex = () => {
 
     setMarkedDates({ ...updatedMarkedDates });
     setSuma(updatedSuma);
-    
+
+  //  setSuma(0)
+
   };
 
   const handleMonthChange = (newMonth) => {
     const selectedDate = new Date(newMonth.timestamp);
     const monthName = selectedDate.toLocaleString('es', { month: 'long' });
-    setCurrentMonth(monthName);
+    setCurrentMonth(monthName);    
   };
+
   const AbrirModal = () => {
     setModalVisible(true);
   };
@@ -113,20 +136,27 @@ const ControlFlex = () => {
       setInfoVisible(false);
     }
   };
+
+  return (   
   
+     <>  
+        
+    <StatusBar backgroundColor='#85C1E9'
+               barStyle="dark-content" 
+               
+               />
 
-
-
-  return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+  <ImageBackground source={require('../assets/bgFlex.jpg')} style={GlobalStyles.fondoViaticos}>
 
-    <View style={styles.container}>
       <Text style={GlobalStyles.tituloFlex}>
        Control Hr Flex
       </Text>
       <Calendar
         hideExtraDays={true}
-        enableSwipeMonths
+       enableSwipeMonths={sweep}
+        hideArrows={hideArrows} // Oculta las flechas de navegación para cambiar de mes.
+
         style={{
             borderWidth:2,
             borderColor:'white',
@@ -169,15 +199,18 @@ const ControlFlex = () => {
         }} />
 
       <Text style={styles.text}>
-        Total de Horas Flex de
-        <Text style={{textTransform:'uppercase',
-                      fontStyle:'italic'}}> {currentMonth}: </Text>
-                <Text style={{
+        Total de Horas Flex  
+        <Text style={{fontWeight:'bold',
+                      fontStyle:'italic', 
+                      textTransform:'uppercase'}}> {currentMonth} </Text>
+          
+          <Text style={{
                       color:'black',
                       backgroundColor:`lightgrey`,
                       fontWeight:'bold',
                       fontSize:24}}> {suma[currentMonth] || 0} </Text>
       </Text>
+
      <View style={{flexDirection: 'row', alignItems:'center', justifyContent:'center' }}>
       <Modal visible={modalVisible}
          animationType='slide'
@@ -221,21 +254,24 @@ const ControlFlex = () => {
         infoOn2={infoOn2}
         AbrirModal={AbrirModal} >
       </Info2>
+      <View style={{marginBottom:60}}>
       <Text style={GlobalStyles.sumaFlex}>Suma $ {valorHr*(suma[currentMonth] )} </Text>
+      </View>
     </View>
     <View style={{width:"100%", position:'absolute', bottom:0, }}>
     <ToolBar2 Back={Back} AbrirModal={AbrirModal} infoOn2={infoOn2}></ToolBar2>      
     </View>
-    </View>
+    </ImageBackground>
     </TouchableWithoutFeedback>
+    </>
 
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor:`#4682b4`
+ //   flex: 1,
+ //   backgroundColor:`#4682b4`
   },
   text: {
     color:'white',

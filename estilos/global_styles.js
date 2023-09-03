@@ -32,7 +32,7 @@ export const GlobalStyles = StyleSheet.create({
     alignItems:'center',
     flexDirection:'column',
 }, 
-    cont_reloj:{
+  cont_reloj:{
         flex:1,
   //    backgroundColor:`blue`,
         flexDirection:'column',
@@ -88,6 +88,7 @@ export const GlobalStyles = StyleSheet.create({
     alignItems:'center',
     
   },
+ 
   txBotones:{
     fontSize: 24,
     letterSpacing:5,
@@ -250,10 +251,11 @@ export const GlobalStyles = StyleSheet.create({
     backgroundColor:`black`
   },
   tituloViaticos:{
-    width:'100%', 
+    width:'95%', 
     borderWidth:3,
     borderColor:'black',
     color:'black',
+    alignSelf:'center',
     backgroundColor:'white',
     textAlign: 'center', 
     textAlignVertical: 'center',
@@ -262,8 +264,8 @@ export const GlobalStyles = StyleSheet.create({
     padding:1,
     paddingVertical:2,
     borderRadius:15,
-    marginTop:'8%',
-    marginVertical:6,
+    marginTop:'0%',
+    marginVertical:2,
     fontWeight:'bold',
   },
   sumaFlex:{
@@ -420,20 +422,40 @@ totalViaticos:{
   borderBottomRightRadius:20,
   shadowColor:'red',
   backgroundColor:'#191970'
+}, 
+fondoViaticos: {
+  flex:1,
+  resizeMode:'cover',
+  alignContent:'flex-end',
+  justifyContent:'space-between'
+  
 },
-VContInferior:{
-  flex:1, 
-  justifyContent:'center',
-  flexDirection:'row',
-  alignContent:'center', 
-  marginHorizontal:6,
- // borderWidth:2,
- // borderColor:'red'
+VContInferior: {
+  opacity: 0.9,
+  flexDirection: 'row',
+  alignItems: 'flex-end', // Alinea el contenido en el extremo inferior
+  marginHorizontal: 6,
+//  borderWidth: 2,
+//  borderColor: 'lime',
+  marginBottom:60,
 },
 VInfIzq:{
+//  borderColor:'blue',
 //  borderWidth:2,
   width:'56%',
   marginRight:0,
-  marginTop:2
+  marginTop:2,
+},
+ContenedorInfo:{
+  flex:0.55,
+  justifyContent:'flex-start' , 
+  opacity:0.80,
+  marginTop:100,
+  backgroundColor:`#f8f8ff`,
+  borderWidth:3,
+  padding:3,
+  margin:10,
+  borderRadius:10,
+//  borderColor:'red',
 },
   })

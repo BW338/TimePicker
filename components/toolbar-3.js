@@ -23,7 +23,7 @@ return(
         borderTopEndRadius:25,
         borderTopStartRadius:25,
         borderTopWidth:2.5,
-        borderTopColor:'#800000',
+        borderTopColor:'#ffc0cb',
         backgroundColor: 'black', 
         height:tabBarHeight,
       },

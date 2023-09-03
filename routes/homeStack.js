@@ -11,7 +11,7 @@ const HomeStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home" // ruta inicial
+        initialRouteName="Splash" // ruta inicial
         screenOptions={{ headerShown: false }} // Oculta las cabeceras en todas las pantallas
       >
         <Stack.Screen name="Home" component={Home} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, Button, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, FlatList} from 'react-native';
+import { View, Text, StyleSheet,StatusBar, ImageBackground, TextInput, TouchableOpacity, Modal, Button, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, FlatList, ToastAndroid} from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { GlobalStyles } from "../estilos/global_styles";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,32 +8,36 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import ToolBar3 from '../components/toolbar-3';
 import InfoViaticos from './InfoViaticos';
 import { Dropdown } from 'react-native-element-dropdown';
-import { Fontisto, FontAwesome } from '@expo/vector-icons';
+import { Fontisto, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const Viaticos = () => {
 
   const [markedDates, setMarkedDates] = useState({});
   const [suma, setSuma] = useState({});
   const [currentMonth, setCurrentMonth] = useState('');
-  const [valorHr, setValorHr] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [infoVisible, setInfoVisible] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(new Date().toLocaleDateString('es', { month: 'long' }));
-  const [aep, setAep] = useState('000');
-  const [cor, setCor] = useState('000');
-  const [mdz, setMdz] = useState('000');
-  const [ush, setUsh] = useState('000');
-  const [cdr, setCdr] = useState('000');
-  const [fte, setFte] = useState('000');
-  const [nqn, setNqn] = useState('000');
-  const [sla, setSla] = useState('000')
-  const [tuc, setTuc] = useState('000')
-  const [bhi, setBhi] = useState('000')
+  const [aep, setAep] = useState('');
+  const [cor, setCor] = useState('');
+  const [mdz, setMdz] = useState('');
+  const [ush, setUsh] = useState('');
+  const [cdr, setCdr] = useState('');
+  const [fte, setFte] = useState('');
+  const [nqn, setNqn] = useState('');
+  const [sla, setSla] = useState('')
+  const [tuc, setTuc] = useState('')
+  const [bhi, setBhi] = useState('')
   const [totalPostas, setTotalPostas] = useState(0)
   const [key, setKey] = useState (0)
   const [random, setRandom] = useState(0,14)
   const [viaticos, setViaticos] = useState(0)
-
+  const [dropDownVisible, setDropDownVisible] = useState(false)
+  const [newCurrentMonth, setNewCurrenMonth] = useState()
+  const [hideArrows, setHideArrows] = useState(false);
+  const [sweep, setSweep] = useState(true)
+ 
     const [selectedValues, setSelectedValues] = useState(['postas']);
     const [postas] = useState([
       { label: 'COR x1', id: random , month: selectedMonth, key:key},
@@ -56,40 +60,66 @@ const Viaticos = () => {
       { label: 'BHI x2', id: random , month: selectedMonth, key:key},
       { label: 'BHI x3', id: random , month: selectedMonth, key:key},
       { label: 'BHI x4', id: random , month: selectedMonth, key:key},
+      { label: 'SLA x1', id: random , month: selectedMonth, key:key},
+      { label: 'SLA x2', id: random , month: selectedMonth, key:key},
+      { label: 'SLA x3', id: random , month: selectedMonth, key:key},
+      { label: 'SLA x4', id: random , month: selectedMonth, key:key},
+
     ]);
 
   const navigation = useNavigation();
+
+  const [filteredValues, setFilteredValues] = useState([]);
+
+useEffect(() => {
+  loadPersistedData();
+  setCurrentMonth(new Date().toLocaleDateString('es', { month: 'long' }));
+}, []);
+
+useEffect(() => {
+  loadPersistedData();
   
-  //FUNCION QUE SUMA Y MANTIENE ACTUALIZADO EL TOTAL DE VIATICOS****************
-  useEffect(()=> {
-    const sumaNum = parseInt(suma[currentMonth]*aep || 0);
-    const totalPostasNum = parseInt(totalPostas[currentMonth] || 0);
-    const sumatoria = sumaNum + totalPostasNum
-    setViaticos(sumatoria)
-//  console.log('sumatoria: $' + viaticos)
-    totalPostasNum < 0 ? setTotalPostas(0) : console.log('') 
+  const currentDate = new Date();
+  const currentMonth = currentDate.toLocaleDateString('es', { month: 'long' });
+  const currentDay = currentDate.toLocaleDateString('es', { day: '2-digit' });
+  
+  console.log('Se carga el mes: ' + currentMonth + ' ' + currentDay);
+//*** Deshabilita cambio de mes para EVITAR QUE SE PRODUZCA CONFLICTO EN LOS REGISTROS LOS DIAS 1 de cada mes/////
+  if(currentDay === '01'){
+    console.log('Cambio de mes deshabilitado');
+  setHideArrows(true);
+  setSweep(false)
+}else{
+  setHideArrows(false);
+  setSweep(true)
+/////////************************************************************************* */
+}
+setCurrentMonth(new Date().toLocaleDateString('es', { month: 'long' }));
 
-  },[suma, totalPostas, aep, currentMonth]);
+}, []);
 
-  useEffect(() => {
-    loadPersistedData();
-     setCurrentMonth (new Date().toLocaleDateString('es', { month: 'long' })) // Establecer el mes actual al cargar la aplicación
-  }, []);
+useEffect(() => {
+  console.log('se carga el mes: ' + currentMonth);
+  // Filtra los valores cuando selectedValues cambia
+  const newFilteredValues = selectedValues.filter((item) => item.month === currentMonth);
+  setFilteredValues(newFilteredValues);
+}, [currentMonth, selectedValues]);
 
+useEffect(() => {
+  console.log('valores filtado mes: ' + filteredValues);
+}, [filteredValues]);
+ 
   useEffect(() => {
     saveDataToStorage();
-  }, [markedDates, suma, valorHr, aep, cor, bhi,tuc, mdz, nqn, fte, ush, sla, cdr, totalPostas]);
+  }, [markedDates, suma, aep, cor, bhi,tuc, mdz, nqn, fte, ush, sla, cdr, totalPostas]);
 
-  const handleChangeText = (fieldName, newValor) => {
+  const input = (fieldName, newValor) => {
    
     if(fieldName === 'aep'){
-    newValor == NaN ? setAep(0):
     setAep(newValor);
     }
     if(fieldName === 'cor'){
-      newValor != Number ? setCor(0):
-      setCor(newValor);
-      console.log('COR = ' + cor)
+      setCor(newValor)
     }
     if(fieldName === 'sla'){
       setSla(newValor);
@@ -123,15 +153,14 @@ const Viaticos = () => {
       if (storedData) {
         const { markedDates: storedMarkedDates,
                 suma: storedSuma , 
-                valorHr: storedvalorHr, 
                 aep: storedAep, cor:storedCor, ush:storedUsh,
                 mdz:storedMdz, sla:storedSla, tuc: storedTuc,
                 fte:storedFte, nqn:storedNqn, bhi:storedBhi,
-                cdr: storedCdr, totalPostas: storedTotalPostas } = JSON.parse(storedData);
-        
+                cdr: storedCdr, totalPostas: storedTotalPostas,
+                } = JSON.parse(storedData);
+                
         setMarkedDates(storedMarkedDates);
         setSuma(storedSuma);
-        setValorHr(storedvalorHr);
         setAep(storedAep)
         setCor(storedCor)
         setUsh(storedUsh)
@@ -143,20 +172,21 @@ const Viaticos = () => {
         setFte(storedFte)
         setNqn(storedNqn)
         setTotalPostas(storedTotalPostas)
-
-        const storedSelectedValues = await AsyncStorage.getItem('selectedValues');
-        if (storedSelectedValues) {
-          setSelectedValues(JSON.parse(storedSelectedValues));
+     
+    const storedSelectedValues = await AsyncStorage.getItem('selectedValues');
+    if (storedSelectedValues) {
+      setSelectedValues(JSON.parse(storedSelectedValues));      
         }}
 
     } catch (error) {
       console.log('Error al cargar los datos:', error);
     }
+
   };
 
   const saveDataToStorage = async () => {
     try {
-      const dataToStore = JSON.stringify({ markedDates, suma, valorHr, aep, cor, ush,
+      const dataToStore = JSON.stringify({ markedDates, suma, aep, cor, ush,
                                            tuc, sla, bhi, fte, nqn, mdz, cdr, totalPostas });
       await AsyncStorage.setItem('calendarData', dataToStore);
     } catch (error) {
@@ -168,65 +198,158 @@ const Viaticos = () => {
   const handleDropdownChange = (item) => {
   
     if (item.value !== 'postas') {  
-    const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
-    setRandom(randomID);
-    
-    const newKey = randomID * 3.3123124;
-    
-    const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
-    setSelectedValues(updatedSelectedValues);
-    saveSelectedValues(updatedSelectedValues);
     
      if (item.label.includes('COR')) {
+      if (Platform.OS === 'android' && (cor == 0 || isNaN(cor || cor == '0'))) {
+        setModalVisible(true)
+        ToastAndroid.show('No hay valor cargado para CORDOBA', ToastAndroid.SHORT); 
+      }if (Platform.OS === 'android'  && (cor === 0  || isNaN(cor || cor == '0'))) {
+        setModalVisible(true)
+ //       Toast.show('No hay valor cargado para CORDOBA', { duration: Toast.durations.SHORT });
+    
+      }if(isNaN(cor) || cor == ''){ setCor('0')
+    
+    }if(!isNaN(cor) && cor !== 0 && cor !== '' && cor !=='0'){  
       const multiplicador = parseInt(item.label.substring(5));
       const corNumero = parseInt(cor);
       const corTotal = corNumero * multiplicador;   
       const updatedTotalPostas = { ...totalPostas };
       updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + corTotal;  
       setTotalPostas(updatedTotalPostas);
-  
-      console.log('Bandeja: $' + cor);
-      console.log('Multiplicador ' + multiplicador);
-      console.log('Total de postas: $' + updatedTotalPostas[currentMonth]);
-      console.log('-------------------------------------------------');
-    
+     
+      console.log('COR: ' + cor)
+
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID)
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);
+
+     
+      }  
+           
     }if (item.label.includes('MDZ')) {
+      if (Platform.OS === 'android' && (mdz == 0 || isNaN(mdz))) {
+        ToastAndroid.show('No hay valor cargado para MENDOZA', ToastAndroid.SHORT); 
+        setModalVisible(true)
+      }if (Platform.OS === 'android'  && (mdz === 0  || isNaN(mdz))) {
+ //       Toast.show('No hay valor cargado para MENDOZA', { duration: Toast.durations.SHORT });
+        setModalVisible(true)
+      }
+      if(isNaN(mdz) || mdz ==''){setMdz('0')}
+      if(!isNaN(mdz) && mdz !== 0 && mdz !== '' && mdz !=='0'){
       const multiplicador = parseInt(item.label.substring(5));
       const mdzNumero = parseInt(mdz);
       const mdzTotal = mdzNumero * multiplicador;
       const updatedTotalPostas = { ...totalPostas };
       updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + mdzTotal;
       setTotalPostas(updatedTotalPostas);
-   
+     
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID);
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);
+
+    }
     }if (item.label.includes('SLA')) {
+      if (Platform.OS === 'android' && (sla == 0 || isNaN(sla))) {
+        ToastAndroid.show('No hay valor cargado para SALTA', ToastAndroid.SHORT); 
+        setModalVisible(true)
+    }if(Platform.OS === 'android'  && (sla === 0  || isNaN(sla))) {
+//      Toast.show('No hay valor cargado para SALTA', { duration: Toast.durations.SHORT });
+      setModalVisible(true)
+      }
+      if(isNaN(sla) || sla == '') {setSla('0')}
+      if(!isNaN(sla) && sla !== 0 && sla !== '' && sla !=='0' ){
       const multiplicador = parseInt(item.label.substring(5));
       const slaNumero = parseInt(sla);
       const slaTotal = slaNumero * multiplicador;
       const updatedTotalPostas = { ...totalPostas };
       updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + slaTotal;
       setTotalPostas(updatedTotalPostas);
-    
+
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID);
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);
+  }
     }if (item.label.includes('BHI')) {
+      if (Platform.OS === 'android' && (bhi == 0 || isNaN(bhi) || bhi == '0')) {
+        ToastAndroid.show('No hay valor cargado para BAHIA BLANCA', ToastAndroid.SHORT); 
+        setModalVisible(true)
+      }if (Platform.OS === 'android'  && (bhi === 0  || isNaN(bhi)|| bhi == '0')) {
+     //   Toast.show('No hay valor cargado para BAHIA BLANCA', { duration: Toast.durations.SHORT });
+        setModalVisible(true)
+      }
+      if(isNaN(bhi) || bhi == ''){ setBhi('0')}
+      if(!isNaN(bhi) && bhi !== 0 && bhi !== '' && bhi !=='0'){ 
       const multiplicador = parseInt(item.label.substring(5));
       const bhiNumero = parseInt(bhi);
-      const bhiTotal = bhiNumero * multiplicador;
+      const bhiTotal = bhiNumero * multiplicador;   
       const updatedTotalPostas = { ...totalPostas };
-      updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + bhiTotal;
+      updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + bhiTotal;  
       setTotalPostas(updatedTotalPostas);
+
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID);
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);
+      }
     }if (item.label.includes('TUC')) {
+      if (Platform.OS === 'android' && (tuc == 0 || isNaN(tuc))) {
+        ToastAndroid.show('No hay valor cargado para TUCUMAN', ToastAndroid.SHORT); 
+        setModalVisible(true)
+      }if (Platform.OS === 'android'  && (tuc === 0  || isNaN(tuc))) {
+ //       Toast.show('No hay valor cargado para TUCUMAN', { duration: Toast.durations.SHORT });
+        setModalVisible(true)
+      }
+      if(isNaN(tuc) || tuc == ''){setTuc(0)}
+      if(!isNaN(tuc) && tuc !== 0 && tuc !== '' && (tuc !=='0' && tuc !=='00'&& tuc !=='000' && tuc !=='0000')){
       const multiplicador = parseInt(item.label.substring(5));
       const tucNumero = parseInt(tuc);
       const tucTotal = tucNumero * multiplicador;
       const updatedTotalPostas = { ...totalPostas };
       updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + tucTotal;
       setTotalPostas(updatedTotalPostas);
+
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID);
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);
+      }
     }if (item.label.includes('USH')) {
+      if (Platform.OS === 'android' && (ush == 0 || isNaN(ush))) {
+        ToastAndroid.show('No hay valor cargado para USHUAIA', ToastAndroid.SHORT); 
+        setModalVisible(true) 
+      }if(Platform.OS === 'android'  && (ush === 0  || isNaN(ush))) {
+ //       Toast.show('No hay valor cargado para USHUAIA', { duration: Toast.durations.SHORT });
+        setModalVisible(true)
+      }
+      if(isNaN(ush) || ush ==''){setUsh(0)}
+      if(!isNaN(ush) && ush !== 0 && ush !== '' && ush !=='0' && ush !=='000'&& ush !=='00' !=='0000'){
       const multiplicador = parseInt(item.label.substring(5));
       const ushNumero = parseInt(ush);
       const ushTotal = ushNumero * multiplicador;
       const updatedTotalPostas = { ...totalPostas };
       updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + ushTotal;
       setTotalPostas(updatedTotalPostas);
+
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID);
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);
+      }
     }
   }
   };
@@ -234,7 +357,11 @@ const Viaticos = () => {
   const handleDeleteItem = (item, itemId, itemMonth, itemLabel) => {
     const mes = itemMonth;
     const etiqueta = item.label;
+    
+    (cor === 0 || isNaN(cor) || cor === '') ?  setSelectedValues((prevData) =>
+    prevData.filter((item) => !(itemLabel.includes('COR') && item.month === mes))) : console.log('')
   
+
      if (etiqueta.trim().includes('COR')) {
       const restadorXCOR = etiqueta.trim().substring(5);
       const corNumero = parseInt(cor);
@@ -266,13 +393,19 @@ const Viaticos = () => {
       const updatedTotalPostas = { ...totalPostas };
       updatedTotalPostas[mes] = (updatedTotalPostas[mes] || 0) - bhiNumero * restadorXBHI;
       setTotalPostas(updatedTotalPostas);
+    
+    
     }if (etiqueta.trim().includes('TUC')) {
+      if(isNaN(tuc)){setTuc(0)  
+      }
+      else{
       const restadorXTUC = etiqueta.trim().substring(5);
       const tucNumero = parseInt(tuc);
       const totalPostasNumero = parseInt(totalPostas);
       const updatedTotalPostas = { ...totalPostas };
       updatedTotalPostas[mes] = (updatedTotalPostas[mes] || 0) - tucNumero * restadorXTUC;
       setTotalPostas(updatedTotalPostas);
+      }
     }if (etiqueta.trim().includes('USH')) {
       const restadorXUSH = etiqueta.trim().substring(5);
       const ushNumero = parseInt(ush);
@@ -300,16 +433,25 @@ const Viaticos = () => {
     }
   };
 
-  const renderItem = ({ item }) => (
+ const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleDeleteItem(item, item.id, item.month, item.key, item.label)}>
       <View style={styles.itemContainer}>
+      <Ionicons name="ios-home" size={22} color="black" />
         <Text style={styles.itemText}>{item.label}</Text>
         <FontAwesome name="trash" size={20} color="black" />
       </View>
     </TouchableOpacity>
   );
+/*  const dropdownOn =()=>{
+    if(cor=== 0 || isNaN(cor) || cor === '' || cor ==='0'){
+    setModalVisible(true)
+      setDropDownVisible(false)
+    }
+    else{
+      setDropDownVisible(true)
+    }
+  };*/
   
-  const filteredValues = selectedValues.filter((item) => item.month === currentMonth);
 
   const handleDayPress = (day) => {
     const selectedDate = day.dateString;
@@ -343,6 +485,8 @@ const Viaticos = () => {
 
     setMarkedDates({ ...updatedMarkedDates });
     suma < 0 ? setSuma(0) : setSuma(updatedSuma)
+
+  //  setSuma(0)
   //  setSuma(updatedSuma);
   //  setViaticos(totalPostas)
   //  console.log(viaticos)
@@ -350,10 +494,39 @@ const Viaticos = () => {
   };
 
   const handleMonthChange = (newMonth) => {
+
     const selectedDate = new Date(newMonth.timestamp);
     const monthName = selectedDate.toLocaleString('es', { month: 'long' });
     setCurrentMonth(monthName);
+    console.log('Mes: ' + monthName)
+
   };
+  
+ /* const handleMonthChange = (newMonth) => {
+    const selectedDate = moment(newMonth.timestamp).tz('UTC'); // Convierte a UTC
+    const monthName = selectedDate.format('MMMM'); // Obtiene el nombre del mes en UTC
+  
+
+  
+    const newCurrentMonth = selectedDate.format('MMMM'); // Formatea el mes y el año
+  
+    // Actualiza el estado de currentMonth
+    setCurrentMonth(newCurrentMonth);
+  };
+  */
+  useEffect(() => {
+    // Este efecto se ejecutará después de que el estado de currentMonth se haya actualizado
+    const sumaNum = parseInt(suma[currentMonth]*aep || 0);
+    const totalPostasNum = parseInt(totalPostas[currentMonth] || 0);
+    const sumatoria = sumaNum + totalPostasNum
+    setViaticos(sumatoria)
+//  console.log('sumatoria: $' + viaticos)
+    totalPostasNum < 0 ? setTotalPostas(0) : console.log('') 
+    console.log('*mes : ' + currentMonth);
+    console.log('valores filtado mes: ' + filteredValues)
+
+  }, [currentMonth, suma, totalPostas, aep]); 
+  
   const AbrirModal = () => {
     setModalVisible(true);
   };
@@ -372,19 +545,30 @@ const Viaticos = () => {
     }
   };
   
+ // const moment = require('moment-timezone'); // Importa moment.js
 
 
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-    <View style={GlobalStyles.contenedorViaticos}>
+    <>  
+        
+    <StatusBar backgroundColor='#BEC4FE'
+               barStyle="dark-content" 
+                />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+  <ImageBackground source={require('../assets/bgVIaticos.jpg')} style={GlobalStyles.fondoViaticos}>
+<View style={{marginTop:2}}>
       <Text style={GlobalStyles.tituloViaticos}>
-** REGISTRO VIATICOS **</Text>
+↓  REGISTRO VIATICOS ↓</Text>
+</View>
+<View style={{width:'100%', alignContent:'center'}}>
       <Calendar
         hideExtraDays={true}
-        enableSwipeMonths
+        enableSwipeMonths={sweep}
+        hideArrows={hideArrows}
         style={{
+          
             borderWidth:3,
             borderColor:'black',
             borderRadius:20,
@@ -396,8 +580,8 @@ const Viaticos = () => {
         textMonthFontSize:22,
         textMonthFontWeight:'bold',
         arrowColor:'black',
-        arrowHeight:60,
-        arrowWidth:60,
+        arrowHeight:20,
+        arrowWidth:20,
         calendarBackground:`#fffaf0`,
         dayTextColor:'black',
         textInactiveColor:'red',
@@ -405,14 +589,12 @@ const Viaticos = () => {
         textDayFontSize:16,
         textDisabledColor:'grey',
         }}
-
         markedDates={markedDates}
         markingType={'custom'}
         onDayPress={handleDayPress}
         onMonthChange={handleMonthChange}
         renderDay={(day, selected) => {
           let style = {};
-
           if (selected) {
             style.backgroundColor = 'red';
             style.textColor = 'white';
@@ -424,7 +606,7 @@ const Viaticos = () => {
             </View>
           );
         }} />
-
+</View>
      <View style={{flexDirection: 'row', alignItems:'center', justifyContent:'center' }}>
       <Modal visible={modalVisible}
          animationType='slide'
@@ -433,8 +615,7 @@ const Viaticos = () => {
          style={{ flex: 1, justifyContent: 'flex-end', opacity: 0.94 }}
          behavior={Platform.OS === 'ios' ? 'padding' : null} // Solo aplicar comportamiento de padding en iOS
          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 30} // Ajustar offset para Android
-       >
-
+         >
     <View style={{flex:1, justifyContent:'flex-end' , opacity:0.94}}> 
     <View style={GlobalStyles.ModalStyle}>
       <Text style={GlobalStyles.modalViaticos}>Ingresa el valor de cada bandeja</Text>
@@ -455,19 +636,19 @@ const Viaticos = () => {
      <TextInput
      style={GlobalStyles.valorEscalas$}
      keyboardType='number-pad'
-     value={aep.toString()}
-     onChangeText={(newValor) => handleChangeText('aep', newValor)}
+     value={aep ? aep.toString() : ''}
+     onChangeText={(newValor) => input('aep', newValor)}
      placeholder="$$$$$"
      clearTextOnFocus={true}
      ></TextInput>
 </View>
 <View style={{flexDirection: 'row' }}>
-     <Text style={GlobalStyles.escalas}>cor $ </Text>
+     <Text style={GlobalStyles.escalas}>COR $ </Text>
      <TextInput
      style={GlobalStyles.valorEscalas$}
      keyboardType='number-pad'
-     value={cor.toString()}
-     onChangeText={(newValor) => handleChangeText('cor', newValor)}
+     value={cor ? cor.toString() : ''}
+     onChangeText={(newValor) => input('cor', newValor)}
      placeholder="$$$$$"
      clearTextOnFocus={true}
      ></TextInput>
@@ -477,8 +658,8 @@ const Viaticos = () => {
      <TextInput
      style={GlobalStyles.valorEscalas$}
      keyboardType='number-pad'
-     value={ush.toString()}
-     onChangeText={(newValor) => handleChangeText('ush', newValor)}
+     value={ush ? ush.toString() : ''}
+     onChangeText={(newValor) => input('ush', newValor)}
      placeholder="$$$$$"
      clearTextOnFocus={true}
      ></TextInput>
@@ -488,8 +669,8 @@ const Viaticos = () => {
      <TextInput
      style={GlobalStyles.valorEscalas$}
      keyboardType='number-pad'
-     value={sla.toString()}
-     onChangeText={(newValor) => handleChangeText('sla', newValor)} 
+     value={sla ? sla.toString() : ''}
+     onChangeText={(newValor) => input('sla', newValor)} 
      placeholder="$$$$$"
      clearTextOnFocus={true}
      ></TextInput>
@@ -499,8 +680,8 @@ const Viaticos = () => {
      <TextInput
      style={GlobalStyles.valorEscalas$}
      keyboardType='number-pad'
-     value={tuc.toString()}
-     onChangeText={(newValor) => handleChangeText('tuc', newValor)}
+     value={tuc ? tuc.toString() : ''}
+     onChangeText={(newValor) => input('tuc', newValor)}
      placeholder="$$$$$"
      clearTextOnFocus={true}
      ></TextInput>
@@ -517,8 +698,8 @@ const Viaticos = () => {
      <TextInput
      style={GlobalStyles.valorEscalas$}
      keyboardType='number-pad'
-     value={cdr.toString()}
-     onChangeText={(newValor) => handleChangeText('cdr', newValor)}
+     value={cdr ? cdr.toString() : ''}
+     onChangeText={(newValor) => input('cdr', newValor)}
      placeholder="$$$$$"
      clearTextOnFocus={true}
      ></TextInput>
@@ -528,8 +709,8 @@ const Viaticos = () => {
      <TextInput
      style={GlobalStyles.valorEscalas$}
      keyboardType='number-pad'
-     value={bhi.toString()}
-     onChangeText={(newValor) => handleChangeText('bhi', newValor)}
+     value={bhi ? bhi.toString() : ''}
+     onChangeText={(newValor) => input('bhi', newValor)}
      placeholder="$$$$$"
      clearTextOnFocus={true}
      ></TextInput>
@@ -539,8 +720,8 @@ const Viaticos = () => {
      <TextInput
      style={GlobalStyles.valorEscalas$}
      keyboardType='number-pad'
-     value={mdz.toString()}
-     onChangeText={(newValor) => handleChangeText('mdz', newValor)}
+     value={mdz ? mdz.toString() : ''}
+     onChangeText={(newValor) => input('mdz', newValor)}
      placeholder="$$$$$"
      clearTextOnFocus={true}
      ></TextInput>
@@ -550,8 +731,8 @@ const Viaticos = () => {
      <TextInput
      style={GlobalStyles.valorEscalas$}
      keyboardType='number-pad'
-     value={fte.toString()}
-     onChangeText={(newValor) => handleChangeText('fte', newValor)}
+     value={fte ? fte.toString() : ''}
+     onChangeText={(newValor) => input('fte', newValor)}
      placeholder="$$$$$"
      clearTextOnFocus={true}
      ></TextInput>
@@ -561,8 +742,8 @@ const Viaticos = () => {
      <TextInput
      style={GlobalStyles.valorEscalas$}
      keyboardType='number-pad'
-     value={nqn.toString()}
-     onChangeText={(newValor) => handleChangeText('nqn', newValor)}
+     value={nqn ? nqn.toString() : ''}
+     onChangeText={(newValor) => input('nqn', newValor)}
      placeholder="$$$$$"
      clearTextOnFocus={true}
      ></TextInput>
@@ -608,15 +789,17 @@ const Viaticos = () => {
         <View style={{borderWidth:0, width:'90%', marginTop:'0%'}}>
         <Text style={GlobalStyles.totalViaticos } numberOfLines={3}>
         Total viaticos: 
-        ${viaticos}
+        ${viaticos ||0}
         </Text>
         </View>     
         </View>                
         <View style={{ flex:1}}>
+          
   <Dropdown
         style={styles.dropdown}
         menuStyle={styles.dropdown}
-        placeholderStyle={styles.placeholderStyle}
+        disabled={dropDownVisible}
+        placeholderStyle={styles.cartelPostas}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
@@ -643,8 +826,9 @@ const Viaticos = () => {
     <View style={{width:"100%", position:'absolute', bottom:0, }}>
     <ToolBar3 Back={Back} AbrirModal={AbrirModal} infoViaticos={infoViaticos}></ToolBar3>      
     </View>
-    </View>
+    </ImageBackground>
     </TouchableWithoutFeedback>
+    </>
 
   );
 };
@@ -665,12 +849,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   almanaque: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    alignSelf:'flex-start',
     width: 32,
     height: 32,
     borderRadius: 16,
-    borderWidth: 2,
+    borderWidth:2,
     borderColor: '#000',
   },
   dayText: {
@@ -692,8 +877,10 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 5,
   },
-  placeholderStyle: {
+  cartelPostas: {
+    fontWeight:'bold',
     fontSize: 16,
+    fontStyle:'italic',
   },
   selectedTextStyle: {
     fontSize: 16,
@@ -708,6 +895,8 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'row',
+    backgroundColor:'#dcdcdc',
+    borderBlockColor:'grey',
     justifyContent: 'space-between',
     paddingHorizontal:5,
     paddingVertical:2,
@@ -729,7 +918,6 @@ const styles = StyleSheet.create({
     marginTop:6,
     backgroundColor:`#f0fff0` 
   },
-
 });
 
 export default Viaticos;

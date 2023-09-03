@@ -120,8 +120,6 @@ if(infoVisible == false){
 
 //////////////// C A L C U L A R ----------------------------------------------------------------------------------
    const calcular =()=>{
-
-
     if(checkin === 'Check-in'){  
       Alert.alert('ATENCION!' , 'Debes ingresar al menos horario de presentacion');
       setulteta('Ultimo Aterrizaje');
@@ -370,7 +368,7 @@ setvencColor('yellow');
     return (
         <>  
         
-        <StatusBar backgroundColor='#4682b4'
+        <StatusBar backgroundColor='#2E86C1'
                    barStyle="dark-content" />
 
   <ImageBackground source={require('../assets/bg1.jpg')} style={GlobalStyles.fondo}>
@@ -400,8 +398,11 @@ setvencColor('yellow');
         setinfoVisible={setinfoVisible} 
         infoOn={infoOn}
   ></Info>    
-
-  <Toast ref={() => {Toast.setRef()}}/> 
+  
+{/* ///////////////////////////////////////////////////////////////////////////// */}
+<Toast ref={() => {Toast.setRef()}}/>   
+  
+  {/* ///// ATENCION!! ESTA LINEA ESTABA GENERANDO UNA ADVERTENCIA, COMO PRUEBA ESTA ANULADA */}
 
   <View style={GlobalStyles.box1}>
 
