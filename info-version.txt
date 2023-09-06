@@ -1,0 +1,19 @@
+
+*  V1.2.0
+
+HOME - calculo tabla sindicato
+FLEX - con registro RAV listo 
+VIATICOS - completos
+
+*En esta version se restringio cambio de mes tanto en screen
+VIATICOS como en FLEX debido a conflicto con usos horarios, 
+hasta resolver ese conflico dias 1 de cada mas bloqueado el
+cambio de mes.
+
+*Presenta una Advertencia en HOME "Check the render method onf HOME"
+
+*!presenta ERROR respecto a ViewPropTypes.
+
+se guarda esta version ya que voy a encarar la posible solucion del
+ERROR mencionado en la llamada enterior y quizas la advertencia tambien.
+

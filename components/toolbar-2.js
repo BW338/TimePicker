@@ -2,12 +2,12 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Splash from '../screens/Splash';
-import { MaterialCommunityIcons, Entypo, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 const tabBarHeight = Platform.OS === 'ios' ? 80 : 55;
 
-function ToolBar2({ AbrirModal , infoOn2 , Back}){
+function ToolBar2({ AbrirModal , infoOn2 , Back, abrirRav}){
 
 
 
@@ -53,6 +53,23 @@ return(
           onPress={() => {infoOn2() }} />
           )        
     }}/>
+
+<Tab.Screen
+    name='RAV'
+    component={Splash}
+  
+    options={{
+      headerShown: false,
+      tabBarIcon: ({ color }) => (
+<MaterialIcons name="format-list-bulleted" size={36} color="white" />
+      ),
+      tabBarButton: (props) => (
+        <TouchableOpacity
+          {...props}
+          onPress={() => abrirRav() } />
+          )        
+    }}
+  />
 
   <Tab.Screen
     name='Valor HR FLEX'

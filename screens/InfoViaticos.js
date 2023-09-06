@@ -12,7 +12,7 @@ export default function  InfoViaticos ({infoVisible, infoViaticos, AbrirModal}) 
          animationType='slide'
          transparent={true} >
 
-    <View style={GlobalStyles.ContenedorInfo}> 
+    <View style={GlobalStyles.contenedorInfoViaticos}> 
       <View style={GlobalStyles.InfoStyle}>
       <View style={Styles.diario}>
       <Text style={GlobalStyles.InfoTX}>
@@ -31,13 +31,21 @@ export default function  InfoViaticos ({infoVisible, infoViaticos, AbrirModal}) 
       </Text>
     </View>
     </View>
-    <View style={GlobalStyles.bandejasStyle}>
+
+    <View style={GlobalStyles.cartelesInfoViaticos}>
       <Text style={GlobalStyles.InfoTX}>
       <Text style={{fontSize:16 }}>Ingresa el valor de bandeja de cada escala</Text>
       </Text>
       <FontAwesome name="money" size={36} color="black" onPress={AbrirModal}/>
-
     </View>
+
+    <View style={GlobalStyles.cartelesInfoViaticos}>
+      <Text style={GlobalStyles.InfoTX}>
+      <Text style={{fontSize:16 }}>Seleccion de postas: ejemplo CORDOBA con dos bandejas: "COR x 2"</Text>
+      </Text>
+
+    </View>    
+
     <View style={{flex:1, justifyContent:'center', marginTop:2, alignItems:'center'}}>
     <TouchableOpacity style={GlobalStyles.CloseModal}>    
             <Button 

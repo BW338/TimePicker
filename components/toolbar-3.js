@@ -54,6 +54,25 @@ return(
           )        
     }}/>
 
+<Tab.Screen
+    name='Home'
+    component={Splash}
+  
+    options={{
+      headerShown: false,
+      tabBarIcon: ({ color }) => (
+
+<Entypo name="home" size={36} color="white" />      ),
+      tabBarButton: (props) => (
+        <TouchableOpacity
+          {...props}
+          onPress={() => Back()} />
+          )        
+    }}
+  />
+
+
+
   <Tab.Screen
     name='Valor Bandejas'
     component={Splash}
@@ -70,22 +89,7 @@ return(
           )        
     }}
   />
-  <Tab.Screen
-    name='Back'
-    component={Splash}
-  
-    options={{
-      headerShown: false,
-      tabBarIcon: ({ color }) => (
-        <Ionicons name="ios-arrow-back-circle" size={36} color="white" />
-      ),
-      tabBarButton: (props) => (
-        <TouchableOpacity
-          {...props}
-          onPress={() => Back()} />
-          )        
-    }}
-  />
+ 
 
 
 

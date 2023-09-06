@@ -191,6 +191,29 @@ export const GlobalStyles = StyleSheet.create({
     shadowOpacity:0.25,
     shadowRadius:4,
     elevation:5,
+  },
+  cartelesInfoViaticos:{
+    flex:0.5,
+    backgroundColor:`#f8f8ff`,
+    borderWidth:3,
+    justifyContent:'center',
+    borderStyle:'solid',
+    flexDirection:'row',
+    borderColor:'#708090',
+    alignContent:'center',
+    alignItems:'center',
+    margin:'1%',
+    marginTop:'2%',
+    borderRadius: 10,
+    shadowColor:'black',
+    shadowOffset:{
+      width:0,
+      height:2,  
+    },
+    padding:10,
+    shadowOpacity:0.25,
+    shadowRadius:4,
+    elevation:5,
 
   },
   CloseModal:{
@@ -261,12 +284,15 @@ export const GlobalStyles = StyleSheet.create({
     textAlignVertical: 'center',
     fontSize: 26, 
     textTransform:'uppercase', 
-    padding:1,
+    padding:2,
     paddingVertical:2,
     borderRadius:15,
-    marginTop:'0%',
+    marginTop:'0.5%',
     marginVertical:2,
     fontWeight:'bold',
+    textShadowColor: '#8b4513', // Color de la sombra del texto
+    textShadowOffset: { width: 1.5, height: 1.5 }, // Desplazamiento de la sombra
+    textShadowRadius: 1, // Radio de la sombra
   },
   sumaFlex:{
     color:'white',
@@ -411,18 +437,22 @@ totalPostas$:{
   elevation:5,
 },
 totalViaticos:{
-  color:'#66cdaa',
+  color:'#000080',
   fontWeight:'bold',
-  borderColor:'#ffa500',
+  borderColor:'#000080',
   fontSize:22,
   textAlign:'center',
-  borderWidth:1.3,
+  borderWidth:2,
   marginTop:2,
   padding:2,
   borderBottomRightRadius:20,
   shadowColor:'red',
-  backgroundColor:'#191970'
+  backgroundColor:'#ffefd5',
+  textShadowColor: 'white', // Color de la sombra del texto
+  textShadowOffset: { width: 2, height: 3 }, // Desplazamiento de la sombra
+  textShadowRadius: 3, // Radio de la sombra
 }, 
+
 fondoViaticos: {
   flex:1,
   resizeMode:'cover',
@@ -448,6 +478,18 @@ VInfIzq:{
 },
 ContenedorInfo:{
   flex:0.55,
+  justifyContent:'flex-start' , 
+  opacity:0.80,
+  marginTop:100,
+  backgroundColor:`#f8f8ff`,
+  borderWidth:3,
+  padding:3,
+  margin:10,
+  borderRadius:10,
+//  borderColor:'red',
+},
+contenedorInfoViaticos:{
+  flex:0.8,
   justifyContent:'flex-start' , 
   opacity:0.80,
   marginTop:100,

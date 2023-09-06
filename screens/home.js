@@ -278,11 +278,13 @@ if( CKh >= 19){
    setulteta(ultetaDate.getHours() + ':' + ultetaDate.getMinutes().toString().padStart(2,'0') +  ' ULT-ETA');
 
  //////////---------------------
-    //Calculo segun ETA/////////////////////////////////////////////////////////
-    
 
+
+
+    //Calculo segun ETA/////////////////////////////////////////////////////////   
   setUETA(ultetaDate.getHours());
-
+  console.log('Ult ETA sin entrar en calculo: '+ UETA);
+/*
   if(CKh != 23 && CKh != 0 && CKh != 1 && CKh != 2 && CKh != 3 && CKh != 4 && CKh != 5 ){ 
   
   if(ultetaDate.getHours() == 0){
@@ -338,7 +340,7 @@ if( CKh >= 19){
     ultetaDate = new Date(ultetaMS);
    }
   }
-  
+  */
 const etaTime = ETA.getHours();
 const ultetaTime = ultetaDate.getHours();
 const diff = (etaTime - ultetaTime); 
@@ -349,10 +351,15 @@ let etdMin = ETA.getMinutes();
 if ((ultetaDate.getHours() < ETA.getHours() || ultetaDate.getHours() == ETA.getHours() && ultMin < etdMin) && (diff < 10 )||
 ultetaDate.getHours() <= 23 && ultetaDate.getHours() > 21 && ultetaDate.getHours() > ETA.getHours() && (ETA.getHours() > 22 || ETA.getHours() < 5 ) || 
    (CK.getHours() == 9  && ETA.getHours() <= 8 ) || (CK.getHours() == 8  && ETA.getHours() <= 7 ) || (CK.getHours() == 7 && ETA.getHours() <= 7 ) ||
-   (CK.getHours() == 6  && ETA.getHours() <= 6 ) || (CK.getHours() == 5  && ETA.getHours() <= 5 ) || (CK.getHours() == 4  && ETA.getHours() <= 4 ) ||
-   (CK.getHours() == 3  && ETA.getHours() <= 3 ) || (CK.getHours() == 2  && ETA.getHours() <= 2 )|| (CK.getHours() == 1  && ETA.getHours() <= 1 )) {
+   (CK.getHours() == 6  && ETA.getHours() <= 6 ) || (CK.getHours() == 5  && ETA.getHours() <= 5 ) || (CK.getHours() == 4 && ETA.getHours() <= 4 ) ||
+   (CK.getHours() == 3  && ETA.getHours() <= 3 ) || (CK.getHours() == 2  && ETA.getHours() <= 2 ) || (CK.getHours() == 1 && ETA.getHours() <= 1 )) {
 
     Vibration.vibrate(100);
+
+    console.log('ult eta: ' + ultetaTime);
+    console.log('///////////');
+
+    console.log(' eta: ' + etaTime);
 
 (Toast.show({type:'error', text1:'ATENCION! REVISAR HORARIO ATERRIZAJE'}), 
 

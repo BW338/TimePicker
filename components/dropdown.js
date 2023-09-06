@@ -51,7 +51,8 @@ const DropdownComponent = ({ selectedMonth }) => {
     <View>
       <Dropdown
         style={styles.dropdown}
-        menuStyle={styles.dropdown}
+        menuStyle={styles.dropdownMenu}
+        containerStyle={styles.dropdownMenu}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
@@ -85,7 +86,18 @@ const styles = StyleSheet.create({
     width: '100%',
     marginRight: '16%',
     borderBottomColor: 'grey',
-    borderBottomWidth: 2.5,
+    borderBottomWidth: 3.5,
+  },
+  dropdownMenu: {
+    borderWidth: 2,
+    borderColor:'red',
+    padding: 4,
+    marginTop: 6,
+    height: 40,
+    width: '100%',
+    marginRight: '16%',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 3.5,
   },
   icon: {
     marginRight: 5,

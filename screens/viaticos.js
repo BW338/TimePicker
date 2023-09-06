@@ -83,10 +83,15 @@ useEffect(() => {
   const currentMonth = currentDate.toLocaleDateString('es', { month: 'long' });
   const currentDay = currentDate.toLocaleDateString('es', { day: '2-digit' });
   
-  console.log('Se carga el mes: ' + currentMonth + ' ' + currentDay);
+  if (Platform.OS === 'android') {
+    // Muestra el Toast con una duración de 5 segundos (5000 milisegundos)
+    ToastAndroid.show('Cargando datos...', ToastAndroid.LONG);
+  }
+
+//  console.log('Se carga el mes: ' + currentMonth + ' ' + currentDay);
 //*** Deshabilita cambio de mes para EVITAR QUE SE PRODUZCA CONFLICTO EN LOS REGISTROS LOS DIAS 1 de cada mes/////
   if(currentDay === '01'){
-    console.log('Cambio de mes deshabilitado');
+ //   console.log('Cambio de mes deshabilitado');
   setHideArrows(true);
   setSweep(false)
 }else{
@@ -99,16 +104,13 @@ setCurrentMonth(new Date().toLocaleDateString('es', { month: 'long' }));
 }, []);
 
 useEffect(() => {
-  console.log('se carga el mes: ' + currentMonth);
+//  console.log('se carga el mes: ' + currentMonth);
   // Filtra los valores cuando selectedValues cambia
   const newFilteredValues = selectedValues.filter((item) => item.month === currentMonth);
   setFilteredValues(newFilteredValues);
 }, [currentMonth, selectedValues]);
 
-useEffect(() => {
-  console.log('valores filtado mes: ' + filteredValues);
-}, [filteredValues]);
- 
+
   useEffect(() => {
     saveDataToStorage();
   }, [markedDates, suma, aep, cor, bhi,tuc, mdz, nqn, fte, ush, sla, cdr, totalPostas]);
@@ -217,7 +219,7 @@ useEffect(() => {
       updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + corTotal;  
       setTotalPostas(updatedTotalPostas);
      
-      console.log('COR: ' + cor)
+   //   console.log('COR: ' + cor)
 
       const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
       setRandom(randomID)
@@ -498,7 +500,7 @@ useEffect(() => {
     const selectedDate = new Date(newMonth.timestamp);
     const monthName = selectedDate.toLocaleString('es', { month: 'long' });
     setCurrentMonth(monthName);
-    console.log('Mes: ' + monthName)
+  //  console.log('Mes: ' + monthName)
 
   };
   
@@ -522,8 +524,8 @@ useEffect(() => {
     setViaticos(sumatoria)
 //  console.log('sumatoria: $' + viaticos)
     totalPostasNum < 0 ? setTotalPostas(0) : console.log('') 
-    console.log('*mes : ' + currentMonth);
-    console.log('valores filtado mes: ' + filteredValues)
+  //  console.log('*mes : ' + currentMonth);
+  //  console.log('valores filtado mes: ' + filteredValues)
 
   }, [currentMonth, suma, totalPostas, aep]); 
   
@@ -537,7 +539,7 @@ useEffect(() => {
   };
 
   const infoViaticos = ()=> {
-    console.log('InfoViaticos')
+ //   console.log('InfoViaticos')
     if(infoVisible == false){
       setInfoVisible(true);
     }else{
@@ -545,7 +547,6 @@ useEffect(() => {
     }
   };
   
- // const moment = require('moment-timezone'); // Importa moment.js
 
 
 
@@ -560,7 +561,7 @@ useEffect(() => {
   <ImageBackground source={require('../assets/bgVIaticos.jpg')} style={GlobalStyles.fondoViaticos}>
 <View style={{marginTop:2}}>
       <Text style={GlobalStyles.tituloViaticos}>
-↓  REGISTRO VIATICOS ↓</Text>
+      ⇩  REGISTRO VIATICOS ⇩</Text>
 </View>
 <View style={{width:'100%', alignContent:'center'}}>
       <Calendar
@@ -788,7 +789,7 @@ useEffect(() => {
         </Text>
         <View style={{borderWidth:0, width:'90%', marginTop:'0%'}}>
         <Text style={GlobalStyles.totalViaticos } numberOfLines={3}>
-        Total viaticos: 
+        Total viaticos
         ${viaticos ||0}
         </Text>
         </View>     
@@ -797,13 +798,15 @@ useEffect(() => {
           
   <Dropdown
         style={styles.dropdown}
-        menuStyle={styles.dropdown}
+        containerStyle={styles.dropdownMenu}
+   //     menuStyle={styles.dropdownMenu}
+        itemContainerStyle={styles.dropdownItemMenu}
         disabled={dropDownVisible}
         placeholderStyle={styles.cartelPostas}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        data={[{ label: 'POSTAS', id: -1, value: 'postas' }, ...postas]} // Agregamos un elemento con el título "Postas"
+        data={[/*{ label: 'POSTAS', id: -1, value: 'postas' },*/ ...postas]} // Agregamos un elemento con el título "Postas"
         search
         labelField="label"
         placeholder="Postas"
@@ -873,6 +876,32 @@ const styles = StyleSheet.create({
     marginRight: '16%',
     borderBottomColor: 'grey',
     borderBottomWidth: 2.5,
+  },
+  dropdownMenu: {
+    borderWidth: 2,
+    borderColor:'darkblue',
+    padding: 1,
+    marginTop:1,
+    opacity:1,
+    backgroundColor:'#f0fff0',
+    borderRadius:10,
+    width: '100%',
+    marginRight: '16%',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 2.5,
+  },
+  dropdownItemMenu: {
+    borderWidth: 2,
+    margin:1,
+    borderColor:'darkblue',
+    opacity:1,
+    backgroundColor:'#f0fff0',
+    borderRadius:10,
+    width: '100%',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
   },
   icon: {
     marginRight: 5,
