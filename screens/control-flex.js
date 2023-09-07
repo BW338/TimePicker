@@ -21,7 +21,6 @@ const ControlFlex = () => {
   const [hideArrows, setHideArrows] = useState(false);
   const [sweep, setSweep] = useState(true)
   const navigation = useNavigation();
-  const [f1, setF1] = useState('---')
   const [Frav, setFRav] = useState({});
 
   useEffect(() => {
@@ -150,9 +149,7 @@ const ControlFlex = () => {
     setMarkedDates({ ...updatedMarkedDates });
     setSuma(updatedSuma);
   };
-
   
-
   const handleMonthChange = (newMonth) => {
     const selectedDate = new Date(newMonth.timestamp);
     const monthName = selectedDate.toLocaleString('es', { month: 'long' });
@@ -274,7 +271,7 @@ const ControlFlex = () => {
 
     <View style={{flex:1, justifyContent:'flex-end' , opacity:0.94}}> 
     <View style={GlobalStyles.ModalStyle}>
-      <Text style={GlobalStyles.TitleFlex}>Ingresa el valor de tu Hr FLEX</Text>
+      <Text style={GlobalStyles.TitleFlex}>INGRESA EL VALOR DE TU HORA FLEX</Text>
     <View style={{flexDirection: 'row' }}>
      <Text style={GlobalStyles.valor$}>$ </Text>
      <TextInput
@@ -303,7 +300,9 @@ const ControlFlex = () => {
         infoVisible={infoVisible} 
         setInfoVisible={setInfoVisible} 
         infoOn2={infoOn2}
-        AbrirModal={AbrirModal} >
+        AbrirModal={AbrirModal}
+        abrirRav={abrirRav}
+        >
       </Info2>
       <View style={{marginBottom:60}}>
       <Text style={GlobalStyles.sumaFlex}>Suma $ {valorHr*(suma[currentMonth] )} </Text>
@@ -337,7 +336,16 @@ const ControlFlex = () => {
     <View style={{flexDirection:'row', justifyContent:'space-between'}}> 
       <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
         <Text style={{ marginHorizontal: 2, fontWeight: 'bold', fontSize: 20 }}>Dia |</Text>
-        <Text style={{ marginLeft: 2, fontWeight: 'bold', fontSize: 20, textAlign: 'right' }}>Nro RAV</Text>
+        <Text style={{ 
+           marginLeft: 2,
+           fontWeight: 'bold', 
+           fontSize: 20,
+           textAlign: 'right',
+          // backgroundColor:'red',
+          // borderRadius:12,
+          // padding:2,
+          // margin:2
+           }}>Nro RAV</Text>
         </View>  
       </View>
 
@@ -363,7 +371,7 @@ const ControlFlex = () => {
                 <Text style={styles.diaRav}>{day}</Text>
                 <TextInput
                   style={styles.nroRav}
-             //     value={info}
+                  value={info}
                   keyboardType='number-pad'
                   onChangeText={(text) => {
                     setFRav((prevSelectedDates) => ({
@@ -418,7 +426,7 @@ const ControlFlex = () => {
                 <Text style={styles.diaRav}>{day}</Text>
                 <TextInput
                   style={styles.nroRav}
-              //    value={info}
+                  value={info}
                   keyboardType='number-pad'
                   onChangeText={(text) => {
                     setFRav((prevSelectedDates) => ({
@@ -491,10 +499,15 @@ const styles = StyleSheet.create({
   },
   ravTitulo:{
     fontSize:28,
+    padding:1,
+    fontWeight:'bold',
     textAlign:'center',
     backgroundColor:'white',
     borderWidth:2,
     borderRadius:16,
+    textShadowColor: '#deb887',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 10,
     
   },
   almanaque: {

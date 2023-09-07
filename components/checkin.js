@@ -3,6 +3,8 @@ import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { GlobalStyles } from "../estilos/global_styles";
 
+
+
  function Checkin(){
 
         const [esreloj1visible, setreloj1visible] = useState(false);

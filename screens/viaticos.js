@@ -29,6 +29,8 @@ const Viaticos = () => {
   const [sla, setSla] = useState('')
   const [tuc, setTuc] = useState('')
   const [bhi, setBhi] = useState('')
+  const [ros, setRos] = useState('')
+  const [brc, setBrc] = useState('')
   const [totalPostas, setTotalPostas] = useState(0)
   const [key, setKey] = useState (0)
   const [random, setRandom] = useState(0,14)
@@ -64,6 +66,26 @@ const Viaticos = () => {
       { label: 'SLA x2', id: random , month: selectedMonth, key:key},
       { label: 'SLA x3', id: random , month: selectedMonth, key:key},
       { label: 'SLA x4', id: random , month: selectedMonth, key:key},
+      { label: 'NQN x1', id: random , month: selectedMonth, key:key},
+      { label: 'NQN x2', id: random , month: selectedMonth, key:key},
+      { label: 'NQN x3', id: random , month: selectedMonth, key:key},
+      { label: 'NQN x4', id: random , month: selectedMonth, key:key},
+      { label: 'FTE x1', id: random , month: selectedMonth, key:key},
+      { label: 'FTE x2', id: random , month: selectedMonth, key:key},
+      { label: 'FTE x3', id: random , month: selectedMonth, key:key},
+      { label: 'FTE x4', id: random , month: selectedMonth, key:key},
+      { label: 'CDR x1', id: random , month: selectedMonth, key:key},
+      { label: 'CDR x2', id: random , month: selectedMonth, key:key},
+      { label: 'CDR x3', id: random , month: selectedMonth, key:key},
+      { label: 'CDR x4', id: random , month: selectedMonth, key:key},
+      { label: 'ROS x1', id: random , month: selectedMonth, key:key},
+      { label: 'ROS x2', id: random , month: selectedMonth, key:key},
+      { label: 'ROS x3', id: random , month: selectedMonth, key:key},
+      { label: 'ROS x4', id: random , month: selectedMonth, key:key},
+      { label: 'BRC x1', id: random , month: selectedMonth, key:key},
+      { label: 'BRC x2', id: random , month: selectedMonth, key:key},
+      { label: 'BRC x3', id: random , month: selectedMonth, key:key},
+      { label: 'BRC x4', id: random , month: selectedMonth, key:key},
 
     ]);
 
@@ -113,7 +135,7 @@ useEffect(() => {
 
   useEffect(() => {
     saveDataToStorage();
-  }, [markedDates, suma, aep, cor, bhi,tuc, mdz, nqn, fte, ush, sla, cdr, totalPostas]);
+  }, [markedDates, suma, aep, cor, bhi,tuc, mdz, nqn, fte, ush, sla, cdr,ros, brc, totalPostas]);
 
   const input = (fieldName, newValor) => {
    
@@ -146,6 +168,12 @@ useEffect(() => {
     }
     if(fieldName === 'mdz'){
       setMdz(newValor);
+    }
+    if(fieldName === 'ros'){
+      setRos(newValor);
+    }
+    if(fieldName === 'brc'){
+      setBrc(newValor);
     }
   };
 
@@ -189,7 +217,7 @@ useEffect(() => {
   const saveDataToStorage = async () => {
     try {
       const dataToStore = JSON.stringify({ markedDates, suma, aep, cor, ush,
-                                           tuc, sla, bhi, fte, nqn, mdz, cdr, totalPostas });
+                                           tuc, sla, bhi, fte, nqn, mdz, cdr,ros, brc, totalPostas });
       await AsyncStorage.setItem('calendarData', dataToStore);
     } catch (error) {
       console.log('Error al guardar los datos:', error);
@@ -229,8 +257,7 @@ useEffect(() => {
       saveSelectedValues(updatedSelectedValues);
 
      
-      }  
-           
+      }            
     }if (item.label.includes('MDZ')) {
       if (Platform.OS === 'android' && (mdz == 0 || isNaN(mdz))) {
         ToastAndroid.show('No hay valor cargado para MENDOZA', ToastAndroid.SHORT); 
@@ -350,10 +377,133 @@ useEffect(() => {
       const newKey = randomID * 3.3123124;
       const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
       setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);}}
+    }if (item.label.includes('NQN')) {
+      if (Platform.OS === 'android' && (nqn == 0 || isNaN(nqn))) {
+        ToastAndroid.show('No hay valor cargado para NEUQUÉN', ToastAndroid.SHORT); 
+        setModalVisible(true) 
+      }if(Platform.OS === 'android'  && (nqn === 0  || isNaN(nqn))) {
+ //       Toast.show('No hay valor cargado para USHUAIA', { duration: Toast.durations.SHORT });
+        setModalVisible(true)
+      }
+      if(isNaN(nqn) || nqn ==''){setNqn(0)}
+      if(!isNaN(nqn) && nqn !== 0 && nqn !== '' && nqn !=='0' && nqn !=='000'&& nqn !=='00' !=='0000'){
+      const multiplicador = parseInt(item.label.substring(5));
+      const nqnNumero = parseInt(nqn);
+      const nqnTotal = nqnNumero * multiplicador;
+      const updatedTotalPostas = { ...totalPostas };
+      updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + nqnTotal;
+      setTotalPostas(updatedTotalPostas);
+
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID);
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
       saveSelectedValues(updatedSelectedValues);
       }
+    
+    }if (item.label.includes('FTE')) {
+      if (Platform.OS === 'android' && (fte == 0 || isNaN(fte))) {
+        ToastAndroid.show('No hay valor cargado para CALAFATE', ToastAndroid.SHORT); 
+        setModalVisible(true) 
+      }if(Platform.OS === 'android'  && (nqn === 0  || isNaN(fte))) {
+    //       Toast.show('No hay valor cargado para USHUAIA', { duration: Toast.durations.SHORT });
+        setModalVisible(true)
+      }
+      if(isNaN(fte) || fte ==''){setFte(0)}
+      if(!isNaN(fte) && fte !== 0 && fte !== '' && fte !=='0' && fte !=='000'&& fte !=='00' !=='0000'){
+      const multiplicador = parseInt(item.label.substring(5));
+      const fteNumero = parseInt(fte);
+      const fteTotal = fteNumero * multiplicador;
+      const updatedTotalPostas = { ...totalPostas };
+      updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + fteTotal;
+      setTotalPostas(updatedTotalPostas);
+    
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID);
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);
+      }
+    
+    }if (item.label.includes('CDR')) {
+      if (Platform.OS === 'android' && (cdr == 0 || isNaN(cdr))) {
+        ToastAndroid.show('No hay valor cargado para COMODORO', ToastAndroid.SHORT); 
+        setModalVisible(true) 
+      }if(Platform.OS === 'android'  && (nqn === 0  || isNaN(fte))) {
+    //       Toast.show('No hay valor cargado para USHUAIA', { duration: Toast.durations.SHORT });
+        setModalVisible(true)
+      }
+      if(isNaN(cdr) || crd ==''){setCdr(0)}
+      if(!isNaN(cdr) && cdr !== 0 && cdr !== '' && cdr !=='0' && cdr !=='000'&& cdr !=='00' !=='0000'){
+      const multiplicador = parseInt(item.label.substring(5));
+      const cdrNumero = parseInt(cdr);
+      const cdrTotal = cdrNumero * multiplicador;
+      const updatedTotalPostas = { ...totalPostas };
+      updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + cdrTotal;
+      setTotalPostas(updatedTotalPostas);
+    
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID);
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);
+      }
+    
+    }if (item.label.includes('ROS')) {
+      if (Platform.OS === 'android' && (ros == 0 || isNaN(ros))) {
+        ToastAndroid.show('No hay valor cargado para COMODORO', ToastAndroid.SHORT); 
+        setModalVisible(true) 
+      }if(Platform.OS === 'android'  && (ros === 0  || isNaN(ros))) {
+    //       Toast.show('No hay valor cargado para USHUAIA', { duration: Toast.durations.SHORT });
+        setModalVisible(true)
+      }
+      if(isNaN(ros) || ros ==''){setRos(0)}
+      if(!isNaN(ros) && ros !== 0 && ros !== '' && ros !=='0' && ros !=='000'&& ros !=='00' !=='0000'){
+      const multiplicador = parseInt(item.label.substring(5));
+      const rosNumero = parseInt(ros);
+      const rosTotal = rosNumero * multiplicador;
+      const updatedTotalPostas = { ...totalPostas };
+      updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + rosTotal;
+      setTotalPostas(updatedTotalPostas);
+    
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID);
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);
+      }
+    
+    }if (item.label.includes('BRC')) {
+      if (Platform.OS === 'android' && (brc == 0 || isNaN(brc))) {
+        ToastAndroid.show('No hay valor cargado para COMODORO', ToastAndroid.SHORT); 
+        setModalVisible(true) 
+      }if(Platform.OS === 'android'  && (brc === 0  || isNaN(brc))) {
+    //       Toast.show('No hay valor cargado para USHUAIA', { duration: Toast.durations.SHORT });
+        setModalVisible(true)
+      }
+      if(isNaN(brc) || brc ==''){setBrc(0)}
+      if(!isNaN(brc) && brc !== 0 && brc !== '' && brc !=='0' && brc !=='000'&& brc !=='00' !=='0000'){
+      const multiplicador = parseInt(item.label.substring(5));
+      const brcNumero = parseInt(brc);
+      const brcTotal = brcNumero * multiplicador;
+      const updatedTotalPostas = { ...totalPostas };
+      updatedTotalPostas[currentMonth] = (updatedTotalPostas[currentMonth] || 0) + brcTotal;
+      setTotalPostas(updatedTotalPostas);
+    
+      const randomID = Math.floor(Math.random() * 101) * Math.floor(Math.random() * 101) * 3.3123124;
+      setRandom(randomID);
+      const newKey = randomID * 3.3123124;
+      const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
+      setSelectedValues(updatedSelectedValues);
+      saveSelectedValues(updatedSelectedValues);
+      }
+    
     }
-  }
   };
   
   const handleDeleteItem = (item, itemId, itemMonth, itemLabel) => {
@@ -414,6 +564,41 @@ useEffect(() => {
       const totalPostasNumero = parseInt(totalPostas);
       const updatedTotalPostas = { ...totalPostas };
       updatedTotalPostas[mes] = (updatedTotalPostas[mes] || 0) - ushNumero * restadorXUSH;
+      setTotalPostas(updatedTotalPostas);
+    }if (etiqueta.trim().includes('NQN')) {
+      const restadorXNQN = etiqueta.trim().substring(5);
+      const nqnNumero = parseInt(nqn);
+      const totalPostasNumero = parseInt(totalPostas);
+      const updatedTotalPostas = { ...totalPostas };
+      updatedTotalPostas[mes] = (updatedTotalPostas[mes] || 0) - nqnNumero * restadorXNQN;
+      setTotalPostas(updatedTotalPostas);
+    }if (etiqueta.trim().includes('FTE')) {
+      const restadorXFTE = etiqueta.trim().substring(5);
+      const fteNumero = parseInt(fte);
+      const totalPostasNumero = parseInt(totalPostas);
+      const updatedTotalPostas = { ...totalPostas };
+      updatedTotalPostas[mes] = (updatedTotalPostas[mes] || 0) - fteNumero * restadorXFTE;
+      setTotalPostas(updatedTotalPostas);
+    }if (etiqueta.trim().includes('CDR')) {
+      const restadorXCDR = etiqueta.trim().substring(5);
+      const cdrNumero = parseInt(cdr);
+      const totalPostasNumero = parseInt(totalPostas);
+      const updatedTotalPostas = { ...totalPostas };
+      updatedTotalPostas[mes] = (updatedTotalPostas[mes] || 0) - cdrNumero * restadorXCDR;
+      setTotalPostas(updatedTotalPostas);
+    }if (etiqueta.trim().includes('ROS')) {
+      const restadorXROS = etiqueta.trim().substring(5);
+      const rosNumero = parseInt(ros);
+      const totalPostasNumero = parseInt(totalPostas);
+      const updatedTotalPostas = { ...totalPostas };
+      updatedTotalPostas[mes] = (updatedTotalPostas[mes] || 0) - rosNumero * restadorXROS;
+      setTotalPostas(updatedTotalPostas);
+    }if (etiqueta.trim().includes('BRC')) {
+      const restadorXBRC = etiqueta.trim().substring(5);
+      const brcNumero = parseInt(brc);
+      const totalPostasNumero = parseInt(totalPostas);
+      const updatedTotalPostas = { ...totalPostas };
+      updatedTotalPostas[mes] = (updatedTotalPostas[mes] || 0) - brcNumero * restadorXBRC;
       setTotalPostas(updatedTotalPostas);
     }
 
@@ -619,7 +804,7 @@ useEffect(() => {
          >
     <View style={{flex:1, justifyContent:'flex-end' , opacity:0.94}}> 
     <View style={GlobalStyles.ModalStyle}>
-      <Text style={GlobalStyles.modalViaticos}>Ingresa el valor de cada bandeja</Text>
+      <Text style={styles.modalBandejas}>INGRESA EL VALOR DE CADA BANDEJA</Text>
 
 <View style={{flexDirection:'row',
               justifyContent:'space-between',
@@ -688,6 +873,18 @@ useEffect(() => {
      ></TextInput>
 </View>
 
+<View style={{flexDirection: 'row' }}>
+     <Text style={GlobalStyles.escalas}>ROS $ </Text>
+     <TextInput
+     style={GlobalStyles.valorEscalas$}
+     keyboardType='number-pad'
+     value={ros ? ros.toString() : ''}
+     onChangeText={(newValor) => input('ros', newValor)}
+     placeholder="$$$$$"
+     clearTextOnFocus={true}
+     ></TextInput>
+</View>
+
 </View>
 <View style={{flexDirection:'column',
               width:'50%',
@@ -750,6 +947,18 @@ useEffect(() => {
      ></TextInput>
 </View>
 
+<View style={{flexDirection: 'row' }}>
+     <Text style={GlobalStyles.escalas}>BRC $ </Text>
+     <TextInput
+     style={GlobalStyles.valorEscalas$}
+     keyboardType='number-pad'
+     value={brc ? brc.toString() : ''}
+     onChangeText={(newValor) => input('brc', newValor)}
+     placeholder="$$$$$"
+     clearTextOnFocus={true}
+     ></TextInput>
+</View>
+
 </View>
 
 
@@ -806,7 +1015,7 @@ useEffect(() => {
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        data={[/*{ label: 'POSTAS', id: -1, value: 'postas' },*/ ...postas]} // Agregamos un elemento con el título "Postas"
+        data={[{ label: 'POSTAS', id: -1, value: 'postas' }, ...postas]} // Agregamos un elemento con el título "Postas"
         search
         labelField="label"
         placeholder="Postas"
@@ -946,7 +1155,23 @@ const styles = StyleSheet.create({
     padding: 3,
     marginTop:6,
     backgroundColor:`#f0fff0` 
-  },
+  }, 
+  modalBandejas:{   
+      //textDecorationLine:'underline',
+      padding:2,
+      paddingBottom:'0%',
+      backgroundColor:'lightblue',
+      borderWidth:2,
+      borderLeftColor:'green',
+      borderTopColor:'green',
+      borderRadius:20,
+      textAlign:'center',
+      fontWeight:'900',
+      fontSize:25,
+      textShadowColor: 'white',
+      textShadowOffset: { width: 4, height: 2 },
+      textShadowRadius: 10,
+    },
 });
 
 export default Viaticos;

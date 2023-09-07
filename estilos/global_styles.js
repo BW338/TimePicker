@@ -227,11 +227,20 @@ export const GlobalStyles = StyleSheet.create({
     fontSize:20,
   },
   TitleFlex:{
-    textDecorationLine:'underline',
+    //textDecorationLine:'underline',
+    padding:2,
     paddingBottom:'0%',
+    backgroundColor:'lightblue',
+    borderWidth:2,
+    borderLeftColor:'green',
+    borderTopColor:'green',
+    borderRadius:20,
     textAlign:'center',
     fontWeight:'900',
-    fontSize:30,
+    fontSize:25,
+    textShadowColor: 'white',
+    textShadowOffset: { width: 4, height: 2 },
+    textShadowRadius: 10,
   },
   Title: {
     color: 'white',
@@ -257,8 +266,8 @@ export const GlobalStyles = StyleSheet.create({
 
   },
   tituloFlex:{ 
-    borderWidth:1,
-    borderColor:'white',
+    borderWidth:3,
+    borderColor:'darkgrey',
     color:'white',
     textAlign: 'center', 
     textAlignVertical: 'center',
@@ -271,7 +280,10 @@ export const GlobalStyles = StyleSheet.create({
     marginTop:'6%',
     marginVertical:6,
     fontWeight:'bold',
-    backgroundColor:`black`
+    backgroundColor:`black`,
+    textShadowColor: 'darkgrey',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 10,
   },
   tituloViaticos:{
     width:'95%', 
@@ -477,7 +489,7 @@ VInfIzq:{
   marginTop:2,
 },
 ContenedorInfo:{
-  flex:0.55,
+  flex:0.80,
   justifyContent:'flex-start' , 
   opacity:0.80,
   marginTop:100,
