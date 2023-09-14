@@ -41,18 +41,17 @@ export default function  Info2 ({infoVisible, infoOn2, AbrirModal, abrirRav}) {
     </View>
 
     <View style={GlobalStyles.bandejasStyle}>
+    <MaterialCommunityIcons name="account-cash-outline" size={36} color="black" onPress={AbrirModal}/>
       <Text style={GlobalStyles.InfoTX}>
-      <Text style={{fontSize:16 }}>Ingresa el valor de tu HR FLEX para calcular el total</Text>
+      <Text style={{fontSize:16 }}> Ingresa el valor de tu HR FLEX para calcular el total</Text>
       </Text>
-      <MaterialCommunityIcons name="account-cash-outline" size={28} color="black" onPress={AbrirModal}/>
     </View>
 
     <View style={GlobalStyles.bandejasStyle}>
+    <MaterialIcons name="format-list-bulleted" size={36} color="black" onPress={()=>{infoOn2(); abrirRav()}}/>
       <Text style={GlobalStyles.InfoTX}>
       <Text style={{fontSize:16 }}>Ingresa el numero de RAV del dia correspondiente</Text>
       </Text>
-      <MaterialIcons name="format-list-bulleted" size={36} color="black" 
-      onPress={()=>{infoOn2(); abrirRav()}}/>
     </View>
 
     <View style={{flex:1, justifyContent:'center', marginTop:2, alignItems:'center'}}>
@@ -63,7 +62,6 @@ export default function  Info2 ({infoVisible, infoOn2, AbrirModal, abrirRav}) {
              color= 'brown'
              ></Button>
       </TouchableOpacity>
-      <Text style={{fontWeight:'bold'}}>Version 1.2.0</Text>
 
     </View>
     </View>

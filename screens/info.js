@@ -61,7 +61,6 @@ export default function  Info ({infoVisible, infoOn}) {
              color= 'brown'
              ></Button>
       </TouchableOpacity>
-      <Text style={{fontWeight:'bold'}}>Version 1.2.0</Text>
     </View>
     </View>
   </Modal>

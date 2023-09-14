@@ -103,7 +103,8 @@ const Reset = () => {
   const IrAFlex =()=>{
       navigation.navigate('ControlFlex');
     }
-  const IrAViaticos =()=>{
+  
+    const IrAViaticos =()=>{
 
         navigation.navigate('Viaticos');
         }

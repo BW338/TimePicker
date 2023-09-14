@@ -1,13 +1,14 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Dimensions } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Splash from '../screens/Splash';
-import { FontAwesome, Entypo, Ionicons } from '@expo/vector-icons';
+import { FontAwesome, Entypo, Fontisto, Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
-const tabBarHeight = Platform.OS === 'ios' ? 80 : 55;
-
-function ToolBar3({ AbrirModal , infoViaticos , Back}){
+const windowHeight = Dimensions.get('window').height;
+const tabBarHeightPercentage = 8; // Ajusta el valor según lo que desees, por ejemplo, 8% (0.08)
+const tabBarHeight = (windowHeight * tabBarHeightPercentage) / 100;
+function ToolBar3({ AbrirModal , infoViaticos , Back, ControlFlex, Reset}){
 
 
 
@@ -54,6 +55,23 @@ return(
           )        
     }}/>
 
+ <Tab.Screen
+    name='Reset'
+    component={Splash}
+  
+    options={{
+      headerShown: false,
+      tabBarIcon: ({ color }) => (
+        <Ionicons name="md-refresh-circle-outline" size={36} color="white" />
+      ),
+      tabBarButton: (props) => (
+        <TouchableOpacity
+          {...props}
+          onPress={() => Reset()} />
+          )        
+    }}
+  /> 
+
 <Tab.Screen
     name='Home'
     component={Splash}
@@ -61,8 +79,8 @@ return(
     options={{
       headerShown: false,
       tabBarIcon: ({ color }) => (
-
-<Entypo name="home" size={36} color="white" />      ),
+<Entypo name="home" size={36} color="white" /> 
+     ),
       tabBarButton: (props) => (
         <TouchableOpacity
           {...props}
@@ -74,7 +92,7 @@ return(
 
 
   <Tab.Screen
-    name='Valor Bandejas'
+    name='$$$'
     component={Splash}
   
     options={{
@@ -90,6 +108,22 @@ return(
     }}
   />
  
+ <Tab.Screen
+    name='HS Flex'
+    component={Splash}
+  
+    options={{
+      headerShown: false,
+      tabBarIcon: ({ color }) => (
+        <Fontisto name="date" size={30} color="white" />
+      ),
+      tabBarButton: (props) => (
+        <TouchableOpacity
+          {...props}
+          onPress={() => ControlFlex()} />
+          )        
+    }}
+  />
 
 
 

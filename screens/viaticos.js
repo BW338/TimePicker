@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet,StatusBar, ImageBackground, TextInput, TouchableOpacity, Modal, Button, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, FlatList, ToastAndroid} from 'react-native';
+import { View, Alert, Text, StyleSheet,StatusBar, ImageBackground, TextInput, TouchableOpacity, Modal, Button, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, FlatList, ToastAndroid} from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { GlobalStyles } from "../estilos/global_styles";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -40,6 +40,12 @@ const Viaticos = () => {
   const [hideArrows, setHideArrows] = useState(false);
   const [sweep, setSweep] = useState(true)
  
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+  const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(new Date().getMonth());
+
     const [selectedValues, setSelectedValues] = useState(['postas']);
     const [postas] = useState([
       { label: 'COR x1', id: random , month: selectedMonth, key:key},
@@ -186,7 +192,8 @@ useEffect(() => {
                 aep: storedAep, cor:storedCor, ush:storedUsh,
                 mdz:storedMdz, sla:storedSla, tuc: storedTuc,
                 fte:storedFte, nqn:storedNqn, bhi:storedBhi,
-                cdr: storedCdr, totalPostas: storedTotalPostas,
+                cdr: storedCdr, brc:storedBrc, ros: storedRos,
+                totalPostas: storedTotalPostas,
                 } = JSON.parse(storedData);
                 
         setMarkedDates(storedMarkedDates);
@@ -201,6 +208,8 @@ useEffect(() => {
         setMdz(storedMdz)
         setFte(storedFte)
         setNqn(storedNqn)
+        setBrc(storedBrc)
+        setRos(storedRos)
         setTotalPostas(storedTotalPostas)
      
     const storedSelectedValues = await AsyncStorage.getItem('selectedValues');
@@ -223,8 +232,7 @@ useEffect(() => {
       console.log('Error al guardar los datos:', error);
     }
   };
-
-  
+ 
   const handleDropdownChange = (item) => {
   
     if (item.value !== 'postas') {  
@@ -267,7 +275,7 @@ useEffect(() => {
         setModalVisible(true)
       }
       if(isNaN(mdz) || mdz ==''){setMdz('0')}
-      if(!isNaN(mdz) && mdz !== 0 && mdz !== '' && mdz !=='0'){
+      if(!isNaN(mdz) && mdz !== 0 && mdz !== '' && mdz !=='0' && mdz !=='00' && mdz !=='000' && mdz !=='0000'){
       const multiplicador = parseInt(item.label.substring(5));
       const mdzNumero = parseInt(mdz);
       const mdzTotal = mdzNumero * multiplicador;
@@ -281,7 +289,6 @@ useEffect(() => {
       const updatedSelectedValues = [...selectedValues, { ...item, month: currentMonth, id: randomID, key: newKey }];
       setSelectedValues(updatedSelectedValues);
       saveSelectedValues(updatedSelectedValues);
-
     }
     }if (item.label.includes('SLA')) {
       if (Platform.OS === 'android' && (sla == 0 || isNaN(sla))) {
@@ -685,6 +692,8 @@ useEffect(() => {
     const selectedDate = new Date(newMonth.timestamp);
     const monthName = selectedDate.toLocaleString('es', { month: 'long' });
     setCurrentMonth(monthName);
+    const monthIndex = selectedDate.getMonth(); // Obtén el índice del mes (0-indexado)
+    setCurrentMonthIndex(monthIndex);
   //  console.log('Mes: ' + monthName)
 
   };
@@ -723,6 +732,10 @@ useEffect(() => {
   
   };
 
+  const IrAFlex=()=>{
+    navigation.navigate('ControlFlex')
+  };
+
   const infoViaticos = ()=> {
  //   console.log('InfoViaticos')
     if(infoVisible == false){
@@ -731,9 +744,56 @@ useEffect(() => {
       setInfoVisible(false);
     }
   };
-  
 
+  const disabledDates = {};
 
+ const Reset = (itemMonth) => {
+
+  const mesActual = itemMonth;
+
+    Alert.alert(
+      '¿Deseas resetear todos los valores del mes de ' + currentMonth + '?',
+      'Esta acción restablecerá todos los valores para este mes.',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Resetear',
+          onPress: () => {
+            const updatedMarkedDates = { ...markedDates };
+
+            // Recorre todas las claves de fechas y elimina las del mes actual
+            for (const dateKey in updatedMarkedDates) {
+              const [year, month] = dateKey.split('-').map(Number);
+              if (year === new Date().getFullYear() && month === currentMonthIndex + 1) {
+                delete updatedMarkedDates[dateKey];
+              }
+            }
+            // Actualiza el estado de las fechas marcadas solo para el mes actual
+            setMarkedDates(updatedMarkedDates);
+
+            // Borra contador de bandejas AEP (valor suma[currentMonth])
+            setSuma({ ...suma, [currentMonth]: 0 });
+            
+            // Borra sumador de monto de postas (valor totalPostas[currentMonth])
+            setTotalPostas({...totalPostas, [currentMonth] : 0})
+
+            // Borra postas seleccionadas del mes
+            const updatedSelectedValues = selectedValues.filter((item) => item.month !== currentMonth);
+
+          // Actualiza el estado de los elementos para eliminar los del mes actual
+          setSelectedValues(updatedSelectedValues);
+          
+          saveSelectedValues(updatedSelectedValues);
+         // saveSelectedValues(
+          //  selectedValues.filter((item) => !( item.month === mesActual)));
+          },
+        },
+      ]
+    );
+  };
 
   return (
 
@@ -1036,7 +1096,12 @@ useEffect(() => {
      </View>
     </View>
     <View style={{width:"100%", position:'absolute', bottom:0, }}>
-    <ToolBar3 Back={Back} AbrirModal={AbrirModal} infoViaticos={infoViaticos}></ToolBar3>      
+    <ToolBar3 Back={Back}
+     AbrirModal={AbrirModal} 
+     infoViaticos={infoViaticos}
+     ControlFlex={IrAFlex}
+     Reset={Reset}
+     ></ToolBar3>      
     </View>
     </ImageBackground>
     </TouchableWithoutFeedback>

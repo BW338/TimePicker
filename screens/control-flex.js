@@ -176,6 +176,10 @@ const ControlFlex = () => {
   
   };
 
+  const IrAViaticos =()=>{
+    navigation.navigate('Viaticos')
+  }
+
   const infoOn2 =()=>{
     if(infoVisible == false){
       setInfoVisible(true);
@@ -458,7 +462,14 @@ const ControlFlex = () => {
     </KeyboardAvoidingView>
     </Modal>
     <View style={{width:"100%", position:'absolute', bottom:0, }}>
-    <ToolBar2 Back={Back} AbrirModal={AbrirModal} infoOn2={infoOn2} abrirRav={abrirRav}></ToolBar2>      
+    
+     <ToolBar2 Back={Back} 
+               AbrirModal={AbrirModal} 
+               infoOn2={infoOn2} 
+               abrirRav={abrirRav}
+               viaticos={IrAViaticos}>
+      </ToolBar2>      
+
     </View>
     </ImageBackground>
     </TouchableWithoutFeedback>

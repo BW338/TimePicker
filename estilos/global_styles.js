@@ -220,6 +220,7 @@ export const GlobalStyles = StyleSheet.create({
     width:'70%',
     marginHorizontal:'15%',
     marginVertical:'2%',
+    backgroundColor:'blue',
   },
   TextoFlex:{
     fontWeight:'bold',
@@ -299,8 +300,8 @@ export const GlobalStyles = StyleSheet.create({
     padding:2,
     paddingVertical:2,
     borderRadius:15,
-    marginTop:'0.5%',
-    marginVertical:2,
+    marginTop:'1%',
+    marginVertical:'1%',
     fontWeight:'bold',
     textShadowColor: '#8b4513', // Color de la sombra del texto
     textShadowOffset: { width: 1.5, height: 1.5 }, // Desplazamiento de la sombra
@@ -402,7 +403,7 @@ export const GlobalStyles = StyleSheet.create({
   },
    totalBandejasAep:{
     color:'#000000',
-    padding:3,
+    padding:2,
     borderRadius:12,
     backgroundColor:`#fff5ee`,
     fontWeight:'bold',
@@ -443,7 +444,7 @@ totalPostas$:{
     width:0,
     height:2,  
   },
-  padding:10,
+  padding:2,
   shadowOpacity:0.25,
   shadowRadius:4,
   elevation:5,
@@ -478,8 +479,8 @@ VContInferior: {
   alignItems: 'flex-end', // Alinea el contenido en el extremo inferior
   marginHorizontal: 6,
 //  borderWidth: 2,
-//  borderColor: 'lime',
-  marginBottom:60,
+ // borderColor: 'lime',
+  marginBottom:'22%',
 },
 VInfIzq:{
 //  borderColor:'blue',

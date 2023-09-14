@@ -1,13 +1,14 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Dimensions } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Splash from '../screens/Splash';
 import { MaterialCommunityIcons, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
-const tabBarHeight = Platform.OS === 'ios' ? 80 : 55;
-
-function ToolBar2({ AbrirModal , infoOn2 , Back, abrirRav}){
+const windowHeight = Dimensions.get('window').height;
+const tabBarHeightPercentage = 8; // Ajusta el valor según lo que desees, por ejemplo, 8% (0.08)
+const tabBarHeight = (windowHeight * tabBarHeightPercentage) / 100;
+function ToolBar2({ AbrirModal , infoOn2 , Back, abrirRav, viaticos}){
 
 
 
@@ -71,8 +72,25 @@ return(
     }}
   />
 
+<Tab.Screen
+    name='Back'
+    component={Splash}
+  
+    options={{
+      headerShown: false,
+      tabBarIcon: ({ color }) => (
+        <Entypo name="home" size={36} color="white" /> 
+      ),
+      tabBarButton: (props) => (
+        <TouchableOpacity
+          {...props}
+          onPress={() => Back()} />
+          )        
+    }}
+  />
+
   <Tab.Screen
-    name='Valor HR FLEX'
+    name='$$ HR FLEX'
     component={Splash}
   
     options={{
@@ -88,23 +106,25 @@ return(
           )        
     }}
   />
-  <Tab.Screen
-    name='Back'
+
+
+
+<Tab.Screen
+    name='Viaticos'
     component={Splash}
   
     options={{
       headerShown: false,
       tabBarIcon: ({ color }) => (
-        <Ionicons name="ios-arrow-back-circle" size={36} color="white" />
+        <MaterialIcons name="food-bank" size={36} color="white" />
       ),
       tabBarButton: (props) => (
         <TouchableOpacity
           {...props}
-          onPress={() => Back()} />
+          onPress={() => viaticos()} />
           )        
     }}
   />
-
 
 
   

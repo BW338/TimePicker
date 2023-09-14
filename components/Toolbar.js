@@ -8,8 +8,8 @@ import { Entypo , Fontisto, MaterialIcons  } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 const windowHeight = Dimensions.get('window').height;
-const bottomBarHeight = windowHeight * 0.08; // Ajusta el valor 0.08 según lo que desees
-const tabBarHeight = Platform.OS === 'ios' ? 80 : 55;
+const tabBarHeightPercentage = 8; // Ajusta el valor según lo que desees, por ejemplo, 8% (0.08)
+const tabBarHeight = (windowHeight * tabBarHeightPercentage) / 100;
 
 function ToolBar({ calcular , Reset , infoOn , ControlFlex, viaticos}){
 
@@ -116,7 +116,7 @@ return(
   />
 
 <Tab.Screen
-    name='ControlFlex'
+    name='HS Flex'
     component={Splash}
   
     options={{

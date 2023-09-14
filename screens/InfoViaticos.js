@@ -1,7 +1,7 @@
 import React, {} from "react";
 import {View, Text, Modal, TouchableOpacity, Button,StyleSheet} from 'react-native';
 import { GlobalStyles } from "../estilos/global_styles";
-import {FontAwesome } from '@expo/vector-icons';
+import {FontAwesome, Fontisto } from '@expo/vector-icons';
 
 export default function  InfoViaticos ({infoVisible, infoViaticos, AbrirModal}) {
   
@@ -33,13 +33,14 @@ export default function  InfoViaticos ({infoVisible, infoViaticos, AbrirModal}) 
     </View>
 
     <View style={GlobalStyles.cartelesInfoViaticos}>
+    <FontAwesome name="money" size={36} color="black" onPress={AbrirModal}/>
       <Text style={GlobalStyles.InfoTX}>
       <Text style={{fontSize:16 }}>Ingresa el valor de bandeja de cada escala</Text>
       </Text>
-      <FontAwesome name="money" size={36} color="black" onPress={AbrirModal}/>
     </View>
 
     <View style={GlobalStyles.cartelesInfoViaticos}>
+    <Fontisto name="hotel" size={32} color="black" marginRight={4} />
       <Text style={GlobalStyles.InfoTX}>
       <Text style={{fontSize:16 }}>Seleccion de postas: ejemplo CORDOBA con dos bandejas: "COR x 2"</Text>
       </Text>
@@ -47,14 +48,13 @@ export default function  InfoViaticos ({infoVisible, infoViaticos, AbrirModal}) 
     </View>    
 
     <View style={{flex:1, justifyContent:'center', marginTop:2, alignItems:'center'}}>
-    <TouchableOpacity style={GlobalStyles.CloseModal}>    
+    <TouchableOpacity style={[GlobalStyles.CloseModal, { backgroundColor: 'blue' }]}>    
             <Button 
              title= 'Cerrar'
              onPress={()=>{infoViaticos()} }
              color= 'brown'
              ></Button>
       </TouchableOpacity>
-      <Text style={{fontWeight:'bold'}}>Version 1.2.0</Text>
 
     </View>
     </View>
