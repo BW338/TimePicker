@@ -439,11 +439,11 @@ useEffect(() => {
       if (Platform.OS === 'android' && (cdr == 0 || isNaN(cdr))) {
         ToastAndroid.show('No hay valor cargado para COMODORO', ToastAndroid.SHORT); 
         setModalVisible(true) 
-      }if(Platform.OS === 'android'  && (nqn === 0  || isNaN(fte))) {
+      }if(Platform.OS === 'android'  && (cdr === 0  || isNaN(cdr))) {
     //       Toast.show('No hay valor cargado para USHUAIA', { duration: Toast.durations.SHORT });
         setModalVisible(true)
       }
-      if(isNaN(cdr) || crd ==''){setCdr(0)}
+      if(isNaN(cdr) || cdr ==''){setCdr(0)}
       if(!isNaN(cdr) && cdr !== 0 && cdr !== '' && cdr !=='0' && cdr !=='000'&& cdr !=='00' !=='0000'){
       const multiplicador = parseInt(item.label.substring(5));
       const cdrNumero = parseInt(cdr);

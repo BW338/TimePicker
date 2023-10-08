@@ -8,6 +8,7 @@ const Tab = createBottomTabNavigator();
 const windowHeight = Dimensions.get('window').height;
 const tabBarHeightPercentage = 8; // Ajusta el valor según lo que desees, por ejemplo, 8% (0.08)
 const tabBarHeight = (windowHeight * tabBarHeightPercentage) / 100;
+
 function ToolBar3({ AbrirModal , infoViaticos , Back, ControlFlex, Reset}){
 
 
