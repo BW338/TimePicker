@@ -2,7 +2,7 @@
   "expo": {
     "name": "Time Picker",
     "slug": "TP",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "orientation": "portrait",
     "icon": "./assets/icono.png",
     "userInterfaceStyle": "light",
@@ -20,13 +20,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "11",
+      "buildNumber": "12",
       "bundleIdentifier": "com.guido1988.TP",
       "icon": "./assets/icono.png"
     },
 
     "android": {
-      "versionCode": 9,
+      "versionCode": 10,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icono.png",
         "backgroundColor": "#FFFFFF"

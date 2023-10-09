@@ -46,7 +46,7 @@ export default function Splash({ navigation }) {
       <View style={{marginBottom:4}}>
       <Animated.Text style={{ color: 'white',
                               fontSize: 14,
-                              opacity: fadeAnim }}>Version 1.2.1</Animated.Text>
+                              opacity: fadeAnim }}>Version 1.2.2</Animated.Text>
       </View>
     </ImageBackground>
   );
